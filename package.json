@@ -1,0 +1,27 @@
+{
+  "name": "deploy-ido",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy:bscTestnet": "npx hardhat run --network bscTestnet scripts/deploy-testnet.ts",
+    "deploy:avaTestnet": "npx hardhat run --network avalTestnet scripts/deploy-testnet.ts",
+    "deploy:mainnet": "npx hardhat run --network mainnet scripts/deploy.ts",
+    "test": "npx hardhat test",
+    "test:coverage": "npx hardhat coverage",
+    "test:size-contracts": "npx hardhat size-contracts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.3.0",
+    "bignumber.js": "^9.3.0",
+    "dotenv": "^16.5.0",
+    "hardhat": "^2.23.0",
+    "hardhat-abi-exporter": "^2.11.0",
+    "hardhat-contract-sizer": "^2.10.0"
+  }
+}
