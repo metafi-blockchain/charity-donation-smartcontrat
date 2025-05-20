@@ -6,10 +6,7 @@ interface ICampaign {
 
     function withdraw(address _token, uint256 _amount) external;
 
-    function getDonors(
-        uint256 _startIndex,
-        uint256 _count
-    ) external returns (address[] memory, uint256[] memory);
+    function getUsers() external returns (address[] memory, uint256[] memory);
 
-    function getDonorsLength() external view returns (uint256);
+    // function getUsersLength() external view returns (uint256);
 }

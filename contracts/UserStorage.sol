@@ -7,7 +7,6 @@ import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet
 
 contract UserStorage is Ownable {
     using EnumerableSet for EnumerableSet.AddressSet;
-    // EnumerableSet.AddressSet campaigns;
 
     IUserManager userManager;
 

@@ -7,20 +7,10 @@ import {IRateManager} from "./interface/IRateManager.sol";
 import {IUserManager} from "./interface/IUserManager.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IRateManager} from "./interface/IRateManager.sol";
-import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract Campaign is ICampaign {
-    using EnumerableSet for EnumerableSet.AddressSet;
-
-    string public name;
-    uint256 public startTime;
-    uint256 public endTime;
-    address public admin;
-    IManager public manager;
-
-    EnumerableSet.AddressSet donors;
-
+contract Campaign is ICampaign, ReentrancyGuard {
     struct Donation {
         address token;
         uint256 amount;
@@ -28,11 +18,26 @@ contract Campaign is ICampaign {
         uint256 time;
     }
 
-    mapping(address => uint256) balances; // token => total donated
-    mapping(address => uint256) withdraws;
-    mapping(address => uint256) userTotalDonations; // user => total donated
-    mapping(address => mapping(address => uint256)) userDonations; // user => token => amount
-    mapping(address => Donation[]) userDonationsDetail; // user => donation
+    struct User {
+        uint256 totalDonation;
+        mapping(address => uint256) donationPerToken;
+        Donation[] donations;
+    }
+
+    string public name;
+    uint256 public startTime;
+    uint256 public endTime;
+    address public admin;
+    IManager public manager;
+
+    uint256 public totalDonation;
+
+    address[] public tokenList;
+    address[] public userAddressList;
+
+    mapping(address => uint256) balances; // token => amount
+    mapping(address => uint256) withdraws; //token => amount
+    mapping(address => User) users;
 
     event DonationEvent(
         address user,
@@ -92,7 +97,7 @@ contract Campaign is ICampaign {
     function donate(
         address _token,
         uint256 _amount
-    ) external payable validCampaign {
+    ) public payable nonReentrant validCampaign {
         if (msg.value != 0) {
             _token = address(0);
             _amount = msg.value;
@@ -113,11 +118,15 @@ contract Campaign is ICampaign {
         }
 
         // Update campaign
+        if (balances[_token] == 0) tokenList.push(_token);
+        if (users[msg.sender].totalDonation == 0)
+            userAddressList.push(msg.sender);
+
+        totalDonation += amountConvert;
         balances[_token] += _amount;
-        donors.add(msg.sender);
-        userTotalDonations[msg.sender] += amountConvert;
-        userDonations[msg.sender][_token] += _amount;
-        userDonationsDetail[msg.sender].push(
+        users[msg.sender].totalDonation += amountConvert;
+        users[msg.sender].donationPerToken[_token] += _amount;
+        users[msg.sender].donations.push(
             Donation({
                 token: _token,
                 amount: _amount,
@@ -130,7 +139,6 @@ contract Campaign is ICampaign {
         address userManager = manager.getUserManager();
         IUserManager(userManager).donate(
             msg.sender,
-            // address(this),
             _token,
             _amount,
             amountConvert
@@ -143,6 +151,10 @@ contract Campaign is ICampaign {
             amountConvert,
             block.timestamp
         );
+    }
+
+    receive() external payable {
+        donate(address(0), msg.value);
     }
 
     function setupAdmin(address _admin) external onlyManager {
@@ -158,35 +170,93 @@ contract Campaign is ICampaign {
             "Error: insufficient amount"
         );
 
-        IERC20(_token).transferFrom(address(this), admin, _amount);
+        if (_token == address(0)) {
+            (bool success, ) = payable(admin).call{value: _amount}("");
+            require(success, "Error: Withdraw failed");
+            // payable(admin).transfer(_amount);
+        } else {
+            IERC20(_token).transfer(admin, _amount);
+        }
+
+        withdraws[_token] += _amount;
 
         emit WithdrawEvent(admin, _token, _amount, block.timestamp);
     }
 
-    function getDonors(
-        uint256 _startIndex,
-        uint256 _count
-    ) public view returns (address[] memory, uint256[] memory) {
-        address[] memory donorList;
+    function getUsers()
+        public
+        view
+        returns (address[] memory, uint256[] memory)
+    {
         uint256[] memory amountList;
 
-        uint256 donorsLength = donors.length();
-        if (donorsLength > 0 && _startIndex < donorsLength) {
-            if (donorsLength - _startIndex < _count)
-                _count = donorsLength - _startIndex;
-            donorList = new address[](_count);
-            amountList = new uint256[](_count);
+        uint256 length = getUsersLength();
 
-            for (uint256 i = 0; i < _count; i++) {
-                address donor = donors.at(_startIndex + i);
-                donorList[i] = donor;
-                amountList[i] = userTotalDonations[donor];
-            }
+        amountList = new uint256[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            amountList[i] = users[userAddressList[i]].totalDonation;
         }
-        return (donorList, amountList);
+
+        return (userAddressList, amountList);
     }
 
-    function getDonorsLength() public view returns (uint256) {
-        return donors.length();
+    function getUsersLength() public view returns (uint256) {
+        return userAddressList.length;
+    }
+
+    function getDonationsLength(address _user) public view returns (uint256) {
+        return users[_user].donations.length;
+    }
+
+    function getDonations(
+        address _user
+    )
+        public
+        view
+        returns (
+            address[] memory,
+            uint256[] memory,
+            uint256[] memory,
+            uint256[] memory
+        )
+    {
+        address[] memory tokens;
+        uint256[] memory amounts;
+        uint256[] memory amountConverts;
+        uint256[] memory times;
+
+        uint256 donationsLength = getDonationsLength(_user);
+
+        tokens = new address[](donationsLength);
+        amounts = new uint256[](donationsLength);
+        amountConverts = new uint256[](donationsLength);
+        times = new uint256[](donationsLength);
+
+        for (uint256 i = 0; i < donationsLength; i++) {
+            tokens[i] = users[_user].donations[i].token;
+            amounts[i] = users[_user].donations[i].amount;
+            amountConverts[i] = users[_user].donations[i].amountConvert;
+            times[i] = users[_user].donations[i].time;
+        }
+
+        return (tokens, amounts, amountConverts, times);
+    }
+
+    function getBalance()
+        external
+        view
+        returns (uint256, address[] memory, uint256[] memory, uint256[] memory)
+    {
+        uint256 length = tokenList.length;
+        uint256[] memory balanceList = new uint256[](length);
+        uint256[] memory withdrawList = new uint256[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            balanceList[i] = balances[tokenList[i]];
+            withdrawList[i] = withdraws[tokenList[i]];
+        }
+
+        return (totalDonation, tokenList, balanceList, withdrawList);
     }
 }

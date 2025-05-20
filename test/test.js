@@ -6,6 +6,8 @@ const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
+const ZERO_ADDRESS = ethers.ZeroAddress;
+
 describe("Campaign", function () {
   async function deployCampaign() {
     // Contracts are deployed using the first signer/account by default
@@ -15,6 +17,7 @@ describe("Campaign", function () {
       otherCampaignAdmin,
       user1,
       user2,
+      user3,
       otherAccount,
     ] = await ethers.getSigners();
 
@@ -43,6 +46,9 @@ describe("Campaign", function () {
     await usdt.mintTo(user1, 10000000000n);
     await usdt.mintTo(user2, 10000000000n);
 
+    await rateManager.setupRate(usdt, 25000);
+    await rateManager.setupRate(ZERO_ADDRESS, 700);
+
     return {
       manager,
       rateManager,
@@ -51,6 +57,7 @@ describe("Campaign", function () {
       vnd,
       user1,
       user2,
+      user3,
       admin,
       campaignAdmin,
       otherCampaignAdmin,
@@ -71,13 +78,14 @@ describe("Campaign", function () {
         rateManager,
         userManager,
         usdt,
+        admin,
         vnd,
         user1,
         user2,
+        user3,
         otherCampaignAdmin,
         campaignAdmin,
       } = await loadFixture(deployCampaign);
-      await rateManager.setupRate(usdt, 25000);
 
       //CREATE CAMPAIGN
       const name = "CAMPAIGN-1";
@@ -112,11 +120,15 @@ describe("Campaign", function () {
       await campaign.connect(user2).donate(usdt, 2);
 
       // Check list donors
-      expect(await campaign.getDonorsLength()).to.equal(2);
-      let data = await campaign.getDonors(0, 10);
-      expect((await campaign.getDonors(0, 10))[0]).to.deep.equal([
+      expect(await campaign.getUsersLength()).to.equal(2);
+      expect((await campaign.getUsers())[0]).to.deep.equal([
         user1.address,
         user2.address,
+      ]);
+
+      //check balance
+      expect((await campaign.getBalance())[1]).to.deep.equal([
+        await usdt.getAddress(),
       ]);
 
       //Check campaign balane
@@ -135,6 +147,37 @@ describe("Campaign", function () {
       expect(
         await userManager.getCampaigns(user2.address, 0, 10)
       ).to.deep.equal([await campaign.getAddress()]);
+
+      //User donates aval
+      await campaign.connect(user1).donate(ZERO_ADDRESS, 1, {
+        value: ethers.parseEther("1.0"),
+      });
+      await campaign.connect(user2).donate(ZERO_ADDRESS, 2, {
+        value: ethers.parseEther("2.0"),
+      });
+
+      console.log(await campaign.getBalance());
+
+      console.log(
+        await ethers.provider.getBalance(await campaign.getAddress())
+      );
+
+      // Withdraw
+      await campaign.connect(otherCampaignAdmin).withdraw(usdt, 1);
+      await campaign
+        .connect(otherCampaignAdmin)
+        .withdraw(ZERO_ADDRESS, ethers.parseEther("1.0"));
+
+      console.log(await campaign.getBalance());
+
+      //User 3 not call donate function but send native aval directly
+      const tx = await user3.sendTransaction({
+        to: await campaign.getAddress(),
+        value: ethers.parseEther("1.0"),
+      });
+      await tx.wait();
+
+      console.log(await campaign.getBalance());
     });
   });
 });
