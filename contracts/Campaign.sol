@@ -9,8 +9,9 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IRateManager} from "./interface/IRateManager.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 
-contract Campaign is ICampaign, ReentrancyGuard {
+contract Campaign is ICampaign, ReentrancyGuard, Pausable {
     struct Donation {
         address token;
         uint256 amount;
@@ -28,6 +29,7 @@ contract Campaign is ICampaign, ReentrancyGuard {
     uint256 public startTime;
     uint256 public endTime;
     address public admin;
+    uint256 public target;
     IManager public manager;
 
     uint256 public totalDonation;
@@ -70,6 +72,7 @@ contract Campaign is ICampaign, ReentrancyGuard {
         string memory _name,
         uint256 _startTime,
         uint256 _endTime,
+        uint256 _target,
         address _admin,
         address _manager
     ) {
@@ -80,24 +83,26 @@ contract Campaign is ICampaign, ReentrancyGuard {
         require(_manager != address(0), "Error: address(0)");
 
         name = _name;
-        startTime = _startTime;
+        startTime = _startTime; // 0 => no start time
         endTime = _endTime; //  0 => no end time
+        target = _target; // 0 => no target
         admin = _admin;
         manager = IManager(_manager);
     }
 
     modifier validCampaign() {
-        require(block.timestamp >= startTime, "Error: Campaign not start yet");
-        if (endTime != 0) {
-            require(block.timestamp <= endTime, "Error: Campaign closed");
-        }
+        // require(block.timestamp >= startTime, "Error: Campaign not start yet");
+        // if (endTime != 0) {
+        //     require(block.timestamp <= endTime, "Error: Campaign closed");
+        // }
+        require(getStatus() == Status.ON_GOING, "Error: Status invalid");
         _;
     }
 
     function donate(
         address _token,
         uint256 _amount
-    ) public payable nonReentrant validCampaign {
+    ) public payable nonReentrant whenNotPaused validCampaign {
         if (msg.value != 0) {
             _token = address(0);
             _amount = msg.value;
@@ -243,7 +248,7 @@ contract Campaign is ICampaign, ReentrancyGuard {
         return (tokens, amounts, amountConverts, times);
     }
 
-    function getBalance()
+    function getBalances()
         external
         view
         returns (uint256, address[] memory, uint256[] memory, uint256[] memory)
@@ -258,5 +263,22 @@ contract Campaign is ICampaign, ReentrancyGuard {
         }
 
         return (totalDonation, tokenList, balanceList, withdrawList);
+    }
+
+    function getStatus() public view returns (Status) {
+        if (startTime > block.timestamp) return Status.WAITING;
+        if (endTime != 0 && endTime < block.timestamp) return Status.FINISHED;
+        if (target > 0 && totalDonation >= target)
+            return Status.COMPLETE_TARGET;
+        if (paused()) return Status.PAUSED;
+        return Status.ON_GOING;
+    }
+
+    function info()
+        external
+        view
+        returns (string memory, uint256, uint256, uint256, address, Status)
+    {
+        return (name, startTime, endTime, target, admin, getStatus());
     }
 }

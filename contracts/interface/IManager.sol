@@ -3,14 +3,20 @@ pragma solidity ^0.8.0;
 
 interface IManager {
     function createCampaign(
-        uint256 _id,
+        string calldata _id,
         string calldata _name,
         uint256 _startTime,
         uint256 _endTime,
+        uint256 _target,
         address _admin
     ) external returns (address);
 
-    function setupCampaignAdmin(address payable _campaign, address _admin) external;
+    function setupCampaignAdmin(
+        address payable _campaign,
+        address _admin
+    ) external;
+
+    function getCampaign(string calldata _id) external view returns (address);
 
     function getRateManager() external returns (address);
 

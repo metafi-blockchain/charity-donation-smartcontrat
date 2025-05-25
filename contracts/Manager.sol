@@ -14,7 +14,8 @@ contract Manager is IManager, AccessControl, Ownable {
 
     bytes32 private constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     EnumerableSet.AddressSet campaigns;
-    mapping(uint256 => address) idToCampaign;
+    mapping(string => address) idToCampaign;
+    mapping(address => address[]) userCampaigns;
 
     RateManager public rateManager;
     UserManager public userManager;
@@ -50,10 +51,11 @@ contract Manager is IManager, AccessControl, Ownable {
     }
 
     function createCampaign(
-        uint256 _id,
+        string calldata _id,
         string calldata _name,
         uint256 _startTime,
         uint256 _endTime,
+        uint256 _target,
         address _admin
     ) external onlyAdmin returns (address) {
         require(idToCampaign[_id] == address(0), "Error: ID invalid");
@@ -61,11 +63,13 @@ contract Manager is IManager, AccessControl, Ownable {
             _name,
             _startTime,
             _endTime,
+            _target,
             _admin,
             address(this)
         );
         campaigns.add(address(campaign));
         idToCampaign[_id] = address(campaign);
+        userCampaigns[_admin].push(address(campaign));
 
         emit CreateCampaignEvent(_name, _startTime, _endTime, block.timestamp);
         return address(campaign);
@@ -75,7 +79,7 @@ contract Manager is IManager, AccessControl, Ownable {
         return campaigns.length();
     }
 
-    function getCampaign(uint256 _id) external view returns (address) {
+    function getCampaign(string calldata _id) external view returns (address) {
         return idToCampaign[_id];
     }
 

@@ -20,7 +20,7 @@ const main = async () => {
   // const UserStorage = await ethers.getContractFactory("UserStorage");
   // const userStorage = await UserStorage.deploy();
 
-  // await sleep(5000);
+  // await sleep(1000);
 
   // const userStorageAddress = await userStorage.getAddress();
   // console.log(`User storage:  ${userStorageAddress} `);
@@ -30,7 +30,7 @@ const main = async () => {
   // const userManagerAddress = await userManager.getAddress();
   // console.log(`User manager:  ${userManagerAddress} `);
 
-  // await sleep(5000);
+  // await sleep(1000);
 
   // await userStorage.setupUserManager(userManagerAddress);
 
@@ -39,7 +39,7 @@ const main = async () => {
   // const rateManagerAddress = await rateManager.getAddress();
   // console.log(`Rate manager:  ${rateManagerAddress} `);
 
-  // await sleep(5000);
+  // await sleep(1000);
 
   // await rateManager.setupRate(
   //   "0xd0FcC782776645278c5239f2cE510683d34F3dBe",
