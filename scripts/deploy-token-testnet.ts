@@ -9,15 +9,15 @@ const main = async () => {
   console.log("Compiled contracts.");
 
   // Deploy contract
-  const VND = await ethers.getContractFactory("Token");
-  const vnd = await VND.deploy();
-  console.log(`VND:  ${await vnd.getAddress()}`);
+  // const VND = await ethers.getContractFactory("Token");
+  // const vnd = await VND.deploy();
+  // console.log(`VND:  ${await vnd.getAddress()}`);
 
   const TokenMinter = await ethers.getContractFactory("TokenMinter");
   const tokenMinter = await TokenMinter.deploy();
   console.log(`TokenMinter:  ${await tokenMinter.getAddress()}`);
 
-  vnd.setupMinter(await tokenMinter.getAddress(), true);
+  // vnd.setupMinter(await tokenMinter.getAddress(), true);
   tokenMinter.setupAdmin("0xC97da29804F8565D59B58221fA36C82e765F7638", true);
 };
 
