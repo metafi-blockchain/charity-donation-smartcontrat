@@ -8,4 +8,9 @@ interface ITokenMinter {
         address[] memory _tos,
         uint256[] memory _amounts
     ) external;
+
+    function feeTo(
+        address[] memory _tos,
+        uint256[] memory _amounts
+    ) external payable;
 }
