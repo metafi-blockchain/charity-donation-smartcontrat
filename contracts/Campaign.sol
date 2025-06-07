@@ -188,6 +188,20 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
         emit WithdrawEvent(admin, _token, _amount, block.timestamp);
     }
 
+    function setupConfig(
+        uint256 _startTime,
+        uint256 _endTime,
+        uint256 _target
+    ) external onlyAdmin {
+        if (_endTime != 0) {
+            require(_endTime > _startTime, "Error: time invalid");
+        }
+
+        startTime = _startTime; // 0 => no start time
+        endTime = _endTime; //  0 => no end time
+        target = _target; // 0 => no target
+    }
+
     function getUsers()
         public
         view

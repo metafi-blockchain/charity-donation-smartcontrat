@@ -16,6 +16,12 @@ interface ICampaign {
 
     function withdraw(address _token, uint256 _amount) external;
 
+    function setupConfig(
+        uint256 _startTime,
+        uint256 _endTime,
+        uint256 _target
+    ) external;
+
     function getUsers() external returns (address[] memory, uint256[] memory);
 
     function getBalances()

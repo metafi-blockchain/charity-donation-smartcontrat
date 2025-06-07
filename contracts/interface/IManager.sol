@@ -11,6 +11,15 @@ interface IManager {
         address _admin
     ) external returns (address);
 
+    function createCampaigns(
+        string[] calldata _ids,
+        string[] calldata _names,
+        uint256[] calldata _startTimes,
+        uint256[] calldata _endTimes,
+        uint256[] calldata _targets,
+        address[] calldata _admins
+    ) external;
+
     function setupCampaignAdmin(
         address payable _campaign,
         address _admin

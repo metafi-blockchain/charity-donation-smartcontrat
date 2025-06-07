@@ -24,6 +24,7 @@ contract Manager is IManager, AccessControl, Ownable {
         string name,
         uint256 startTime,
         uint256 endTime,
+        uint256 target,
         uint256 time
     );
     event SetupAdminEvent(address campaign, address admin, uint256 time);
@@ -57,7 +58,7 @@ contract Manager is IManager, AccessControl, Ownable {
         uint256 _endTime,
         uint256 _target,
         address _admin
-    ) external onlyAdmin returns (address) {
+    ) public onlyAdmin returns (address) {
         require(idToCampaign[_id] == address(0), "Error: ID invalid");
         Campaign campaign = new Campaign(
             _name,
@@ -71,8 +72,42 @@ contract Manager is IManager, AccessControl, Ownable {
         idToCampaign[_id] = address(campaign);
         userCampaigns[_admin].push(address(campaign));
 
-        emit CreateCampaignEvent(_name, _startTime, _endTime, block.timestamp);
+        emit CreateCampaignEvent(
+            _name,
+            _startTime,
+            _endTime,
+            _target,
+            block.timestamp
+        );
         return address(campaign);
+    }
+
+    function createCampaigns(
+        string[] calldata _ids,
+        string[] calldata _names,
+        uint256[] calldata _startTimes,
+        uint256[] calldata _endTimes,
+        uint256[] calldata _targets,
+        address[] calldata _admins
+    ) public onlyAdmin {
+        require(
+            _ids.length == _names.length &&
+                _ids.length == _startTimes.length &&
+                _ids.length == _endTimes.length &&
+                _ids.length == _targets.length &&
+                _ids.length == _admins.length,
+            "Error: Input invalid"
+        );
+        for (uint16 i = 0; i < _ids.length; i++) {
+            createCampaign(
+                _ids[i],
+                _names[i],
+                _startTimes[i],
+                _endTimes[i],
+                _targets[i],
+                _admins[i]
+            );
+        }
     }
 
     function getCampaignsLength() public view returns (uint256) {
