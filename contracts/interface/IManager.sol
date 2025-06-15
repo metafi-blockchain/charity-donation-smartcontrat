@@ -25,6 +25,8 @@ interface IManager {
         address _admin
     ) external;
 
+    
+
     function getCampaign(string calldata _id) external view returns (address);
 
     function getRateManager() external returns (address);

@@ -10,6 +10,8 @@ interface ICampaign {
         PAUSED
     }
 
+    function getStatus() public view returns (Status);
+
     function donate(address _token, uint256 _amount) external payable;
 
     // function delegateDonate(address _token, uint256 _amount, uint256 _user) external ;
@@ -32,5 +34,14 @@ interface ICampaign {
     function info()
         external
         view
-        returns (string memory, uint256, uint256, uint256, address, Status);
+        returns (
+            string memory,
+            uint256,
+            uint256,
+            uint256,
+            address,
+            Status,
+            uint256,
+            uint256
+        );
 }

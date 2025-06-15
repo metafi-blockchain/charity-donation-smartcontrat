@@ -5,7 +5,7 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "deploy:bscTestnet": "npx hardhat run --network bscTestnet scripts/deploy-testnet.ts",
-    "deploy:avaTestnet": "npx hardhat run --network avalTestnet scripts/deploy-testnet.ts",
+    "deploy:avalTestnet": "npx hardhat run --network avalTestnet scripts/deploy-testnet.ts",
     "deploy:mainnet": "npx hardhat run --network mainnet scripts/deploy.ts",
     "test": "npx hardhat test",
     "test:coverage": "npx hardhat coverage",

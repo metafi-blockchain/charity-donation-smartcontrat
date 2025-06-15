@@ -14,4 +14,4 @@ User manager: [0x21A4fCD22Ba48DD59c12c43726089252df06BFc2](https://testnet.snowt
 
 Rate manager: [0x66572B53258AfF686FA7D4aF28394f5be3464D20](https://testnet.snowtrace.io/address/0x66572B53258AfF686FA7D4aF28394f5be3464D20)
 
-Manager: [0x8e633b79EcD6a4C7E59212950Bbae644A8F1Cc66](https://testnet.snowtrace.io/address/0x8e633b79EcD6a4C7E59212950Bbae644A8F1Cc66)
+Manager: [0x915CEb9838Ae9698Ce14CA66989D5a0BA22ECAfb](https://testnet.snowtrace.io/address/0x915CEb9838Ae9698Ce14CA66989D5a0BA22ECAfb)

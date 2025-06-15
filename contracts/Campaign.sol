@@ -291,8 +291,26 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
     function info()
         external
         view
-        returns (string memory, uint256, uint256, uint256, address, Status)
+        returns (
+            string memory,
+            uint256,
+            uint256,
+            uint256,
+            address,
+            Status,
+            uint256,
+            uint256
+        )
     {
-        return (name, startTime, endTime, target, admin, getStatus());
+        return (
+            name,
+            startTime,
+            endTime,
+            target,
+            admin,
+            getStatus(),
+            totalDonation,
+            userAddressList.length
+        );
     }
 }
