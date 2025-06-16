@@ -33,6 +33,7 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
     IManager public manager;
 
     uint256 public totalDonation;
+    uint256 public countDonation;
 
     address[] public tokenList;
     address[] public userAddressList;
@@ -128,6 +129,7 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
             userAddressList.push(msg.sender);
 
         totalDonation += amountConvert;
+        countDonation += 1;
         balances[_token] += _amount;
         users[msg.sender].totalDonation += amountConvert;
         users[msg.sender].donationPerToken[_token] += _amount;
@@ -144,8 +146,8 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
         address userManager = manager.getUserManager();
         IUserManager(userManager).donate(
             msg.sender,
-            _token,
-            _amount,
+            // _token,
+            // _amount,
             amountConvert
         );
 
@@ -265,7 +267,13 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
     function getBalances()
         external
         view
-        returns (uint256, address[] memory, uint256[] memory, uint256[] memory)
+        returns (
+            uint256,
+            uint256,
+            address[] memory,
+            uint256[] memory,
+            uint256[] memory
+        )
     {
         uint256 length = tokenList.length;
         uint256[] memory balanceList = new uint256[](length);
@@ -276,7 +284,13 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
             withdrawList[i] = withdraws[tokenList[i]];
         }
 
-        return (totalDonation, tokenList, balanceList, withdrawList);
+        return (
+            totalDonation,
+            countDonation,
+            tokenList,
+            balanceList,
+            withdrawList
+        );
     }
 
     function getStatus() public view returns (Status) {
@@ -299,6 +313,7 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
             address,
             Status,
             uint256,
+            uint256,
             uint256
         )
     {
@@ -310,6 +325,7 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
             admin,
             getStatus(),
             totalDonation,
+            countDonation,
             userAddressList.length
         );
     }

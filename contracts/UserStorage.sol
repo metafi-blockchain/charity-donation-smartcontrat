@@ -10,9 +10,19 @@ contract UserStorage is Ownable {
 
     IUserManager userManager;
 
-    mapping(address => EnumerableSet.AddressSet) userCampaigns; // user => campaigns
-    mapping(address => uint256) userTotalDonations; // user => total donated
-    mapping(address => mapping(address => uint256)) userDonations; // user => token => amount
+    struct StorageItem {
+        // EnumerableSet.AddressSet campaigns;
+        address[] campaigns;
+        mapping(address => uint256) amountDonation; // campaign => amount
+        uint256 totalDonation;
+        uint256 countDonation;
+    }
+
+    mapping(address => StorageItem) storageItems;
+
+    // mapping(address => EnumerableSet.AddressSet) userCampaigns; // user => campaigns
+    // mapping(address => uint256) userTotalDonations; // user => total donated
+    // mapping(address => mapping(address => uint256)) userDonations; // user => token => amount
 
     constructor() Ownable(_msgSender()) {}
 
@@ -29,37 +39,39 @@ contract UserStorage is Ownable {
     function save(
         address _campaign,
         address _user,
-        address _token,
-        uint256 _amount,
+        // address _token,
+        // uint256 _amount,
         uint256 _amountConvert
     ) external onlyUserManager {
-        userCampaigns[_user].add(_campaign);
-        userTotalDonations[_user] += _amountConvert;
-        userDonations[_user][_token] += _amount;
-    }
-
-    function getCampaignsLength(address _user) public view returns (uint256){
-        return userCampaigns[_user].length();
-    }
-
-    function getCampaigns(
-        address _user,
-        uint256 _startIndex,
-        uint256 _count
-    ) external view returns (address[] memory){
-        address[] memory campaignList;
-
-        uint256 campaignsLength = getCampaignsLength(_user);
-        
-        if (campaignsLength > 0 && _startIndex < campaignsLength) {
-            if (campaignsLength - _startIndex < _count)
-                _count = campaignsLength - _startIndex;
-            campaignList = new address[](_count);
-
-            for (uint256 i = 0; i < _count; i++) {
-                campaignList[i] = userCampaigns[_user].at(_startIndex + i);
-            }
+        if (storageItems[_user].amountDonation[_campaign] == 0) {
+            storageItems[_user].campaigns.push(_campaign);
         }
-        return (campaignList);
+
+        storageItems[_user].amountDonation[_campaign] += _amountConvert;
+        storageItems[_user].totalDonation += _amountConvert;
+        storageItems[_user].countDonation += 1;
+    }
+
+    function getItem(
+        address _user
+    )
+        external
+        view
+        returns (uint256, uint256, address[] memory, uint256[] memory)
+    {
+        StorageItem storage item = storageItems[_user];
+        uint256 length = item.campaigns.length;
+
+        uint256[] memory amountDonations = new uint256[](length);
+        for (uint256 i = 0; i < length; i++) {
+            amountDonations[i] = item.amountDonation[item.campaigns[i]];
+        }
+
+        return (
+            item.totalDonation,
+            item.countDonation,
+            item.campaigns,
+            amountDonations
+        );
     }
 }

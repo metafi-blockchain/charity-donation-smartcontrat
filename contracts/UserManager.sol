@@ -28,23 +28,19 @@ contract UserManager is IUserManager, Ownable {
 
     function donate(
         address _user,
-        address _token,
-        uint256 _amount,
-        uint256 _amountConvert
+        uint256 _amount
     ) external onlyCampaign(_msgSender()) {
-        userStorage.save(_msgSender(), _user, _token, _amount, _amountConvert);
+        userStorage.save(_msgSender(), _user, _amount);
         // TODO: raking, give NFT
     }
 
-    function getCampaignsLength(address _user) public view returns (uint256) {
-        return userStorage.getCampaignsLength(_user);
-    }
-
-    function getCampaigns(
-        address _user,
-        uint256 _startIndex,
-        uint256 _count
-    ) external view returns (address[] memory) {
-        return userStorage.getCampaigns(_user, _startIndex, _count);
+    function getUserInfo(
+        address _user
+    )
+        external
+        view
+        returns (uint256, uint256, address[] memory, uint256[] memory)
+    {
+        return userStorage.getItem(_user);
     }
 }
