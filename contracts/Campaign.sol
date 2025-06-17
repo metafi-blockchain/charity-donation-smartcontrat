@@ -16,6 +16,7 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
         address token;
         uint256 amount;
         uint256 amountConvert;
+        string message;
         uint256 time;
     }
 
@@ -47,6 +48,7 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
         address token,
         uint256 amount,
         uint256 amountConvert,
+        string message,
         uint256 time
     );
 
@@ -102,7 +104,8 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
 
     function donate(
         address _token,
-        uint256 _amount
+        uint256 _amount,
+        string memory _message
     ) public payable nonReentrant whenNotPaused validCampaign {
         if (msg.value != 0) {
             _token = address(0);
@@ -138,6 +141,7 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
                 token: _token,
                 amount: _amount,
                 amountConvert: amountConvert,
+                message: _message,
                 time: block.timestamp
             })
         );
@@ -156,12 +160,13 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
             _token,
             _amount,
             amountConvert,
+            _message,
             block.timestamp
         );
     }
 
     receive() external payable {
-        donate(address(0), msg.value);
+        donate(address(0), msg.value, "");
     }
 
     function setupAdmin(address _admin) external onlyManager {

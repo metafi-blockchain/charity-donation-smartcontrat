@@ -17,22 +17,22 @@ const main = async () => {
   // await contract.d();
   // console.log(`Deployed to ${await contract.getAddress()}`);
 
-  // const UserStorage = await ethers.getContractFactory("UserStorage");
-  // const userStorage = await UserStorage.deploy();
+  const UserStorage = await ethers.getContractFactory("UserStorage");
+  const userStorage = await UserStorage.deploy();
 
   // await sleep(1000);
 
-  // const userStorageAddress = await userStorage.getAddress();
-  // console.log(`User storage:  ${userStorageAddress} `);
+  const userStorageAddress = await userStorage.getAddress();
+  console.log(`User storage:  ${userStorageAddress} `);
 
-  // const UserManager = await ethers.getContractFactory("UserManager");
-  // const userManager = await UserManager.deploy(userStorageAddress);
-  // const userManagerAddress = await userManager.getAddress();
-  // console.log(`User manager:  ${userManagerAddress} `);
+  const UserManager = await ethers.getContractFactory("UserManager");
+  const userManager = await UserManager.deploy(userStorageAddress);
+  const userManagerAddress = await userManager.getAddress();
+  console.log(`User manager:  ${userManagerAddress} `);
 
-  // await sleep(1000);
+  await sleep(2000);
 
-  // await userStorage.setupUserManager(userManagerAddress);
+  await userStorage.setupUserManager(userManagerAddress);
 
   // const RateManager = await ethers.getContractFactory("RateManager");
   // const rateManager = await RateManager.deploy();
@@ -56,11 +56,11 @@ const main = async () => {
   // const manager = await Manager.deploy(rateManagerAddress, userManagerAddress);
   const manager = await Manager.deploy(
     "0x66572B53258AfF686FA7D4aF28394f5be3464D20",
-    "0x21A4fCD22Ba48DD59c12c43726089252df06BFc2"
+    userManagerAddress
   );
   console.log(`Manager: ${await manager.getAddress()}`);
 
-  // await userManager.setupManager(await manager.getAddress());
+  await userManager.setupManager(await manager.getAddress());
 };
 
 function sleep(ms: number): Promise<void> {

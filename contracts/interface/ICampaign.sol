@@ -12,7 +12,11 @@ interface ICampaign {
 
     function getStatus() external view returns (Status);
 
-    function donate(address _token, uint256 _amount) external payable;
+    function donate(
+        address _token,
+        uint256 _amount,
+        string memory _message
+    ) external payable;
 
     // function delegateDonate(address _token, uint256 _amount, uint256 _user) external ;
 

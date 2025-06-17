@@ -8,10 +8,10 @@ TokenMinter: [0x0003CC57AB03869a67A5f19D341a5757B69Ea497](https://testnet.snowtr
 
 USDT: [0xd0FcC782776645278c5239f2cE510683d34F3dBe](https://testnet.snowtrace.io/address/0xd0FcC782776645278c5239f2cE510683d34F3dBe)
 
-User storage: [0x9D81ADa68B1961bDBAfd8784f51B45Bb91304017](https://testnet.snowtrace.io/address/0x9D81ADa68B1961bDBAfd8784f51B45Bb91304017)
+User storage: [0x6FDBB18a9292cB1dDe3CC00c4a74d392c9a4BA30](https://testnet.snowtrace.io/address/0x6FDBB18a9292cB1dDe3CC00c4a74d392c9a4BA30)
 
-User manager: [0x21A4fCD22Ba48DD59c12c43726089252df06BFc2](https://testnet.snowtrace.io/address/0x21A4fCD22Ba48DD59c12c43726089252df06BFc2)
+User manager: [0x9Be96610af48cD76B44A034bfF969E25Ff6A287b](https://testnet.snowtrace.io/address/0x9Be96610af48cD76B44A034bfF969E25Ff6A287b)
 
 Rate manager: [0x66572B53258AfF686FA7D4aF28394f5be3464D20](https://testnet.snowtrace.io/address/0x66572B53258AfF686FA7D4aF28394f5be3464D20)
 
-Manager: [0x915CEb9838Ae9698Ce14CA66989D5a0BA22ECAfb](https://testnet.snowtrace.io/address/0x915CEb9838Ae9698Ce14CA66989D5a0BA22ECAfb)
+Manager: [0x64A4f82cE311f21D22617ad4Ea1A5e837Bbeee9D](https://testnet.snowtrace.io/address/0x64A4f82cE311f21D22617ad4Ea1A5e837Bbeee9D)

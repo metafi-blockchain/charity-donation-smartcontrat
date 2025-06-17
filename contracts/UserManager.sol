@@ -26,6 +26,11 @@ contract UserManager is IUserManager, Ownable {
         manager = _manager;
     }
 
+    function setupStorage(IUserStorage _userStorage) external onlyOwner {
+        require(address(_userStorage) != address(0), "Error: address(0)");
+        userStorage = _userStorage;
+    }
+
     function donate(
         address _user,
         uint256 _amount
