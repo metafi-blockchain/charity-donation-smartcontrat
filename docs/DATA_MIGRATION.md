@@ -238,8 +238,8 @@ flowchart TD
     C --> D[Lấy donation đầu tiên]
     
     D --> E{Kiểm tra user wallet?}
-    E -- Chưa có --> F[Tạo wallet cho user]
-    E -- Đã có --> G[Lấy wallet address]
+    E -->|Chưa có| F[Tạo wallet cho user]
+    E -->|Đã có| G[Lấy wallet address]
     F --> G
     
     G --> H[Mint VND token tương ứng]
@@ -247,15 +247,15 @@ flowchart TD
     I --> J[Gọi Campaign.donate()]
     
     J --> K{Transaction thành công?}
-    K -- Không --> L[Retry với gas cao hơn]
-    K -- Có --> M[Lưu transaction hash]
+    K -->|Không| L[Retry với gas cao hơn]
+    K -->|Có| M[Lưu transaction hash]
     L --> J
     
     M --> N[Sync với API database]
     N --> O[Cập nhật mapping legacy_id -> tx_hash]
     O --> P{Còn donations nào không?}
-    P -- Có --> Q[Lấy donation tiếp theo]
-    P -- Không --> R[Hoàn thành]
+    P -->|Có| Q[Lấy donation tiếp theo]
+    P -->|Không| R[Hoàn thành]
     
     Q --> D
     
