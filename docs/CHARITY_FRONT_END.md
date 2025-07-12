@@ -160,7 +160,7 @@ sequenceDiagram
     W->>U: Show transaction details
     U->>W: Confirm transaction
     W->>BC: Submit transaction
-    BC->>SC: Execute donate() function
+    BC->>SC: Execute donate function
     SC->>SC: Update campaign balance
     SC->>BC: Emit DonationMade event
     BC->>F: Return transaction hash
