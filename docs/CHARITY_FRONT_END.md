@@ -827,28 +827,3 @@ graph TB
 
 ---
 
-## 11. ROADMAP VÀ TÍNH NĂNG TƯƠNG LAI
-
-### 11.1 Development Roadmap
-
-```mermaid
-gantt
-    title MetaFi Charity Frontend Roadmap
-    dateFormat  YYYY-MM-DD
-    section Phase 1 - Current
-    Core Features Complete     :done, phase1, 2024-01-01, 2024-12-31
-    
-    section Phase 2 - Q1 2025
-    Mobile App Development     :phase2a, 2025-01-01, 90d
-    Advanced Analytics         :phase2b, 2025-01-15, 75d
-    Multi-language Support     :phase2c, 2025-02-01, 60d
-    
-    section Phase 3 - Q2 2025
-    AI-powered Recommendations :phase3a, 2025-04-01, 90d
-    Social Features            :phase3b, 2025-04-15, 75d
-    Gamification               :phase3c, 2025-05-01, 60d
-    
-    section Phase 4 - Q3 2025
-    Cross-chain Support        :phase4a, 2025-07-01, 90d
-    NFT Integration            :phase4b, 2025-07-15, 75d
-    DAO Governance             :phase4c,
