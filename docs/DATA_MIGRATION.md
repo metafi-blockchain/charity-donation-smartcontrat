@@ -292,58 +292,6 @@ gantt
     Monitoring           :monitor, 2024-03-13, 2024-03-20
 ```
 
-### 10.4 Sơ đồ Smart Contract
-*Thiết kế kỹ thuật các smart contract chính trong hệ thống.*
-```mermaid
-classDiagram
-    class Campaign {
-        +address campaignAddress
-        +address managerAddress
-        +uint256 targetAmount
-        +uint256 currentAmount
-        +bool isActive
-        +mapping_address_to_uint256_ donations
-        +donate donor_address, amount_uint256
-        +withdraw recipient_address, amount_uint256
-        +getCampaignInfo : CampaignInfo
-        +updateStatus active_bool
-    }
-    
-    class Manager {
-        +address owner
-        +mapping_address_to_bool_ campaigns
-        +mapping_address_to_address_ userWallets
-        +createCampaign name_string, target_uint256
-        +registerUser user_address, wallet_address
-        +approveCampaign campaign_address
-        +getUserWallet user_address : address
-    }
-    
-    class Token {
-        +string name
-        +string symbol
-        +uint256 totalSupply
-        +mapping_address_to_uint256_ balanceOf
-        +mapping_address_to_mapping_address_to_uint256_ allowance
-        +mint to_address, amount_uint256
-        +transfer to_address, amount_uint256
-        +approve spender_address, amount_uint256
-        +transferFrom from_address, to_address, amount_uint256
-    }
-    
-    class CurrencyConvert {
-        +mapping_string_to_uint256_ exchangeRates
-        +convertToVND amount_uint256, currency_string : uint256
-        +updateExchangeRate currency_string, rate_uint256
-        +getExchangeRate currency_string : uint256
-    }
-    
-    Manager ||--o{ Campaign : manages
-    Campaign ||--o{ Token : uses
-    Manager ||--o{ Token : manages
-    CurrencyConvert ||--o{ Campaign : provides_rates
-```
-
 ### 10.5 Sơ đồ Luồng Xử lý Donation Migration
 *Quy trình từng bước xử lý migration cho từng donation.*
 ```mermaid
