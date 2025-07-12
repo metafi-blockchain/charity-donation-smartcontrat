@@ -184,7 +184,6 @@ graph LR
         G[Google OAuth 2.0]
         T[Twitter API]
         D[Discord OAuth]
-        TG[Telegram Bot API]
     end
     
     subgraph "Frontend"
@@ -216,7 +215,6 @@ graph LR
 - **Google**: Tích hợp API Google, tự động lấy thông tin cá nhân
 - **Twitter**: Xác thực qua Twitter API, xử lý callback tự động
 - **Discord**: Kết nối Discord, phân quyền theo vai trò
-- **Telegram**: Tích hợp bot Telegram, xác thực widget
 - **Email**: Biểu mẫu truyền thống với xác thực mạnh
 
 **Quản lý phiên làm việc an toàn**
@@ -473,7 +471,6 @@ graph TB
 - ✅ `POST /auth/v1/auth/google` - Xác thực Google
 - ✅ `POST /auth/v1/auth/twitter` - Xác thực Twitter
 - ✅ `POST /auth/v1/auth/discord` - Xác thực Discord
-- ✅ `POST /auth/v1/auth/telegram` - Xác thực Telegram
 - ✅ `POST /auth/v1/auth/login` - Đăng nhập email
 - ✅ `POST /auth/v1/auth/refresh` - Làm mới token
 
