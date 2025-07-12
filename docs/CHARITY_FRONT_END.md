@@ -1,8 +1,8 @@
-# BÁO CÁO TỔNG QUAN HỆ THỐNG FRONTEND METAFI CHARITY
+# BÁO CÁO TỔNG QUAN HỆ THỐNG FRONTEND CHARITY
 
 ## Phiên bản Cập nhật - Bổ sung Sơ đồ và Chi tiết Kỹ thuật
 
-MetaFi Charity Frontend ứng dụng web phi tập trung đã được phát triển hoàn chỉnh, kết nối người quyên góp với các chiến dịch từ thiện thông qua công nghệ blockchain. Hệ thống đã triển khai thành công các tính năng cốt lõi và sẵn sàng đưa vào vận hành thương mại.
+Charity Frontend ứng dụng web phi tập trung đã được phát triển hoàn chỉnh, kết nối người quyên góp với các chiến dịch từ thiện thông qua công nghệ blockchain. Hệ thống đã triển khai thành công các tính năng cốt lõi và sẵn sàng đưa vào vận hành thương mại.
 
 **Điểm nổi bật:**
 - Hoàn thành 100% các tính năng chính đã đề ra
