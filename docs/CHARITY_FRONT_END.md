@@ -393,10 +393,10 @@ graph LR
     end
     
     subgraph "Contract Functions"
-        DONATE[donate()]
-        GETBAL[getBalances()]
-        CREATE[createCampaign()]
-        GETINFO[getUserInfo()]
+        DONATE[donate]
+        GETBAL[getBalances]
+        CREATE[createCampaign]
+        GETINFO[getUserInfo]
     end
     
     UCR --> CAMPAIGN
