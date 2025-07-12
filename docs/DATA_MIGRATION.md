@@ -642,5 +642,5 @@ flowchart TD
 
 ## 11. Kết luận
 
-Chuyển đổi dữ liệu sang blockchain là bước tiến lớn về minh bạch, tin cậy, tự động hóa cho nền tảng từ thiện. Thành công không chỉ ở kỹ thuật mà còn ở sự tin tưởng, xác minh và trải nghiệm người dùng.
+Quá trình migration dữ liệu sang blockchain minh bạch, tin cậy, tự động hóa cho
 
