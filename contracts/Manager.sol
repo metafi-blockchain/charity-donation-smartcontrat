@@ -15,8 +15,6 @@ contract Manager is IManager, AccessControl, Ownable {
     bytes32 private constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     EnumerableSet.AddressSet campaigns;
     mapping(string => address) idToCampaign;
-    mapping(address => address[]) userCampaigns;
-
     RateManager public rateManager;
     UserManager public userManager;
 
@@ -70,7 +68,8 @@ contract Manager is IManager, AccessControl, Ownable {
         );
         campaigns.add(address(campaign));
         idToCampaign[_id] = address(campaign);
-        userCampaigns[_admin].push(address(campaign));
+
+        userManager.create(address(campaign), _admin);
 
         emit CreateCampaignEvent(
             _name,
@@ -108,6 +107,16 @@ contract Manager is IManager, AccessControl, Ownable {
                 _admins[i]
             );
         }
+    }
+
+    function setupCampaignConfig(
+        address payable _campaign,
+        uint256 _startTime,
+        uint256 _endTime,
+        uint256 _target
+    ) external onlyAdmin {
+        require(campaigns.contains(_campaign), "Error: campaign invalid");
+        Campaign(_campaign).setupConfig(_startTime, _endTime, _target);
     }
 
     function getCampaignsLength() public view returns (uint256) {

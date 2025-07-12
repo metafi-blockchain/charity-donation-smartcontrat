@@ -199,7 +199,7 @@ contract Campaign is ICampaign, ReentrancyGuard, Pausable {
         uint256 _startTime,
         uint256 _endTime,
         uint256 _target
-    ) external onlyAdmin {
+    ) external onlyManager {
         if (_endTime != 0) {
             require(_endTime > _startTime, "Error: time invalid");
         }

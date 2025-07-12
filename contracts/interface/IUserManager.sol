@@ -9,5 +9,13 @@ interface IUserManager {
     )
         external
         view
-        returns (uint256, uint256, address[] memory, uint256[] memory);
+        returns (
+            uint256,
+            uint256,
+            address[] memory,
+            uint256[] memory,
+            address[] memory, // Own campaigns
+            uint256[] memory, // Amount raised for  a own campaign
+            uint256 // total raised for all campaigns
+        );
 }

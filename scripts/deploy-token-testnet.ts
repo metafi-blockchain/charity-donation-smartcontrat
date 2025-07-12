@@ -18,7 +18,16 @@ const main = async () => {
   console.log(`TokenMinter:  ${await tokenMinter.getAddress()}`);
 
   // vnd.setupMinter(await tokenMinter.getAddress(), true);
-  tokenMinter.setupAdmin("0xC97da29804F8565D59B58221fA36C82e765F7638", true);
+  let admins = [];
+  let isAdmins = [];
+  for (let i = 0; i < 10; i++) {
+    const newWallet = ethers.Wallet.createRandom();
+    console.log(`Address: ${newWallet.address}`);
+    console.log(`PrivateKey: ${newWallet.privateKey}`);
+    admins.push(newWallet.address);
+    isAdmins.push(true);
+  }
+  await tokenMinter.setupAdmins(admins, isAdmins);
 };
 
 // function sleep(ms: number): Promise<void> {

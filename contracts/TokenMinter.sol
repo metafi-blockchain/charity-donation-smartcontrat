@@ -16,9 +16,15 @@ contract TokenMinter is Ownable, ITokenMinter {
         _;
     }
 
-    function setupAdmin(address _admin, bool _isAdmin) external onlyOwner {
-        require(_admin != address(0), "Error: address(0)");
-        admins[_admin] = _isAdmin;
+    function setupAdmins(
+        address[] memory _admins,
+        bool[] memory _isAdmins
+    ) external onlyOwner {
+        require(_admins.length == _isAdmins.length, "Error: input invalid");
+        for (uint8 i = 0; i < _admins.length; i++) {
+            require(_admins[i] != address(0), "Error: input invalid");
+            admins[_admins[i]] = _isAdmins[i];
+        }
     }
 
     function mintTo(

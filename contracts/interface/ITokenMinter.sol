@@ -13,4 +13,9 @@ interface ITokenMinter {
         address[] memory _tos,
         uint256[] memory _amounts
     ) external payable;
+
+    function setupAdmins(
+        address[] memory _admins,
+        bool[] memory _isAdmins
+    ) external;
 }

@@ -60,6 +60,7 @@ const main = async () => {
   );
   console.log(`Manager: ${await manager.getAddress()}`);
 
+  await sleep(2000);
   await userManager.setupManager(await manager.getAddress());
 };
 

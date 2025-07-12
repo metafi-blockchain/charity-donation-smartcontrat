@@ -13,7 +13,9 @@ contract UserStorage is Ownable {
     struct StorageItem {
         // EnumerableSet.AddressSet campaigns;
         address[] campaigns;
+        address[] ownCampaigns;
         mapping(address => uint256) amountDonation; // campaign => amount
+        mapping(address => uint256) amountTotal; // campaign => total amount
         uint256 totalDonation;
         uint256 countDonation;
     }
@@ -39,8 +41,6 @@ contract UserStorage is Ownable {
     function save(
         address _campaign,
         address _user,
-        // address _token,
-        // uint256 _amount,
         uint256 _amountConvert
     ) external onlyUserManager {
         if (storageItems[_user].amountDonation[_campaign] == 0) {
@@ -52,12 +52,22 @@ contract UserStorage is Ownable {
         storageItems[_user].countDonation += 1;
     }
 
+    function save(address _campaign, address _admin) external onlyUserManager {
+        storageItems[_admin].ownCampaigns.push(_campaign);
+    }
+
     function getItem(
         address _user
     )
         external
         view
-        returns (uint256, uint256, address[] memory, uint256[] memory)
+        returns (
+            uint256,
+            uint256,
+            address[] memory,
+            uint256[] memory,
+            address[] memory
+        )
     {
         StorageItem storage item = storageItems[_user];
         uint256 length = item.campaigns.length;
@@ -71,7 +81,8 @@ contract UserStorage is Ownable {
             item.totalDonation,
             item.countDonation,
             item.campaigns,
-            amountDonations
+            amountDonations,
+            item.ownCampaigns
         );
     }
 }

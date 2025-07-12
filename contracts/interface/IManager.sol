@@ -25,7 +25,12 @@ interface IManager {
         address _admin
     ) external;
 
-    
+    function setupCampaignConfig(
+        address payable _campaign,
+        uint256 _startTime,
+        uint256 _endTime,
+        uint256 _target
+    ) external;
 
     function getCampaign(string calldata _id) external view returns (address);
 
