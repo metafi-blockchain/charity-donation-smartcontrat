@@ -244,7 +244,7 @@ flowchart TD
     
     G --> H[Mint VND token tương ứng]
     H --> I[Approve token cho Campaign contract]
-    I --> J[Gọi Campaign.donate()]
+    I --> J[Gọi Campaign.donate]
     
     J --> K{Transaction thành công?}
     K -->|Không| L[Retry với gas cao hơn]
