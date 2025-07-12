@@ -302,46 +302,46 @@ classDiagram
         +uint256 targetAmount
         +uint256 currentAmount
         +bool isActive
-        +mapping(address => uint256) donations
-        +donate(address donor, uint256 amount)
-        +withdraw(address recipient, uint256 amount)
-        +getCampaignInfo() CampaignInfo
-        +updateStatus(bool active)
+        +mapping_address_to_uint256_ donations
+        +donate donor_address, amount_uint256
+        +withdraw recipient_address, amount_uint256
+        +getCampaignInfo : CampaignInfo
+        +updateStatus active_bool
     }
     
     class Manager {
         +address owner
-        +mapping(address => bool) campaigns
-        +mapping(address => address) userWallets
-        +createCampaign(string name, uint256 target)
-        +registerUser(address user, address wallet)
-        +approveCampaign(address campaign)
-        +getUserWallet(address user) address
+        +mapping_address_to_bool_ campaigns
+        +mapping_address_to_address_ userWallets
+        +createCampaign name_string, target_uint256
+        +registerUser user_address, wallet_address
+        +approveCampaign campaign_address
+        +getUserWallet user_address : address
     }
     
     class Token {
         +string name
         +string symbol
         +uint256 totalSupply
-        +mapping(address => uint256) balanceOf
-        +mapping(address => mapping(address => uint256)) allowance
-        +mint(address to, uint256 amount)
-        +transfer(address to, uint256 amount)
-        +approve(address spender, uint256 amount)
-        +transferFrom(address from, address to, uint256 amount)
+        +mapping_address_to_uint256_ balanceOf
+        +mapping_address_to_mapping_address_to_uint256_ allowance
+        +mint to_address, amount_uint256
+        +transfer to_address, amount_uint256
+        +approve spender_address, amount_uint256
+        +transferFrom from_address, to_address, amount_uint256
     }
     
     class CurrencyConvert {
-        +mapping(string => uint256) exchangeRates
-        +convertToVND(uint256 amount, string currency) uint256
-        +updateExchangeRate(string currency, uint256 rate)
-        +getExchangeRate(string currency) uint256
+        +mapping_string_to_uint256_ exchangeRates
+        +convertToVND amount_uint256, currency_string : uint256
+        +updateExchangeRate currency_string, rate_uint256
+        +getExchangeRate currency_string : uint256
     }
     
     Manager ||--o{ Campaign : manages
     Campaign ||--o{ Token : uses
     Manager ||--o{ Token : manages
-    CurrencyConvert ||--o{ Campaign : provides rates
+    CurrencyConvert ||--o{ Campaign : provides_rates
 ```
 
 ### 10.5 Sơ đồ Luồng Xử lý Donation Migration
