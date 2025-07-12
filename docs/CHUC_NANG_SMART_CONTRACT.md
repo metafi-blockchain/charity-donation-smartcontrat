@@ -404,13 +404,3 @@ token.mintTo(otherAddress, 1000);
 3. **Kiểm tra thời gian:** Chiến dịch phải trong thời gian hoạt động
 4. **Kiểm tra quyền:** Chỉ admin/manager mới được thực hiện các chức năng quan trọng
 5. **Kiểm tra số dư:** Không được rút quá số dư khả dụng
-
----
-
-## HẠN CHẾ HIỆN TẠI
-
-1. Chưa có cơ chế hủy/đóng chiến dịch
-2. Chưa có cơ chế phê duyệt donate
-3. Chưa có cơ chế cập nhật tỷ giá tự động
-4. Chưa có cơ chế pause/unpause token
-5. Chưa có cơ chế burn token 
