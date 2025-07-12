@@ -303,67 +303,245 @@ flowchart TD
     style N fill:#fff3e0
 ```
 
-### 10.7 Sơ đồ Cấu trúc Dữ liệu API
-*Minh họa cấu trúc bảng dữ liệu chính của API backend.*
-```mermaid
-erDiagram
-    ...
-```
+
 
 ### 10.8 Sơ đồ Monitoring Dashboard
 *Theo dõi tiến độ migration, sức khỏe hệ thống và độ chính xác dữ liệu.*
 ```mermaid
-dashBoard
-    ...
+graph TD
+    subgraph "REAL-TIME METRICS"
+        A[Tiến độ Migration] --> A1[Campaigns: 85%]
+        A --> A2[Donations: 92%]
+        A --> A3[Users: 78%]
+        A --> A4[Withdrawals: 95%]
+    end
+    
+    subgraph "SYSTEM HEALTH"
+        B[Sức khỏe Hệ thống] --> B1[Blockchain: Online]
+        B --> B2[API: Healthy]
+        B --> B3[Database: Normal]
+        B --> B4[Frontend: Active]
+    end
+    
+    subgraph "DATA ACCURACY"
+        C[Độ chính xác Dữ liệu] --> C1[Donations: 99.8%]
+        C --> C2[Balances: 100%]
+        C --> C3[Transactions: 99.9%]
+        C --> C4[User Mapping: 100%]
+    end
+    
+    subgraph "ERROR MONITORING"
+        D[Giám sát Lỗi] --> D1[Failed TX: 0.1%]
+        D --> D2[Gas Issues: 0.05%]
+        D --> D3[API Errors: 0.02%]
+        D --> D4[User Issues: 0.08%]
+    end
+    
+    subgraph "PERFORMANCE METRICS"
+        E[Hiệu suất] --> E1[Avg TX Time: 2.3s]
+        E --> E2[Gas Price: 25 Gwei]
+        E --> E3[Success Rate: 99.9%]
+        E --> E4[Uptime: 99.95%]
+    end
+    
+    subgraph "ALERTS & NOTIFICATIONS"
+        F[Cảnh báo] --> F1[High Gas Price]
+        F --> F2[Failed Transactions]
+        F --> F3[System Downtime]
+        F --> F4[Data Discrepancy]
+    end
+    
+    subgraph "VERIFICATION STATUS"
+        G[Trạng thái Xác minh] --> G1[Campaigns: Verified]
+        G --> G2[Donations: Verified]
+        G --> G3[Users: Verified]
+        G --> G4[Balances: Verified]
+    end
+    
+    style A fill:#e3f2fd
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
+    style D fill:#ffebee
+    style E fill:#f3e5f5
+    style F fill:#fff8e1
+    style G fill:#e0f2f1
 ```
 
 ### 10.9 Sơ đồ Emergency Recovery Plan
 *Quy trình xử lý sự cố, rollback và khôi phục migration.*
 ```mermaid
 flowchart TD
-    ...
+    A[Phát hiện sự cố] --> B{Phân loại sự cố}
+    
+    B -->|Lỗi dữ liệu| C[Kiểm tra tính toàn vẹn]
+    B -->|Lỗi blockchain| D[Kiểm tra network]
+    B -->|Lỗi API| E[Kiểm tra backend]
+    B -->|Lỗi user access| F[Kiểm tra authentication]
+    B -->|Lỗi performance| G[Kiểm tra resources]
+    
+    C --> H{Dữ liệu có bị corrupt?}
+    D --> I{Blockchain có hoạt động?}
+    E --> J{API có respond?}
+    F --> K{User có login được?}
+    G --> L{System có overload?}
+    
+    H -->|Có| M[Rollback to checkpoint]
+    H -->|Không| N[Repair data]
+    I -->|Không| O[Switch to backup node]
+    I -->|Có| P[Check gas price]
+    J -->|Không| Q[Restart API service]
+    J -->|Có| R[Check database]
+    K -->|Không| S[Reset user session]
+    K -->|Có| T[Check permissions]
+    L -->|Có| U[Scale up resources]
+    L -->|Không| V[Optimize queries]
+    
+    M --> W[Restore from backup]
+    N --> X[Validate data integrity]
+    O --> Y[Update node config]
+    P --> Z[Adjust gas strategy]
+    Q --> AA[Monitor API health]
+    R --> BB[Check DB connection]
+    S --> CC[Clear cache]
+    T --> DD[Update user roles]
+    U --> EE[Add more servers]
+    V --> FF[Optimize code]
+    
+    W --> GG{Recovery thành công?}
+    X --> GG
+    Y --> HH{Node hoạt động?}
+    Z --> II{Gas price ổn?}
+    AA --> JJ{API stable?}
+    BB --> KK{DB connected?}
+    CC --> LL{User access OK?}
+    DD --> LL
+    EE --> MM{Performance OK?}
+    FF --> MM
+    
+    GG -->|Có| NN[Thông báo team]
+    GG -->|Không| OO[Escalate to senior]
+    HH -->|Có| PP[Update routing]
+    HH -->|Không| QQ[Use fallback node]
+    II -->|Có| RR[Continue migration]
+    II -->|Không| SS[Pause migration]
+    JJ -->|Có| TT[Resume operations]
+    JJ -->|Không| UU[Debug API]
+    KK -->|Có| VV[Continue sync]
+    KK -->|Không| WW[Restore DB]
+    LL -->|Có| XX[Resume user access]
+    LL -->|Không| YY[Investigate auth]
+    MM -->|Có| ZZ[Monitor performance]
+    MM -->|Không| AAA[Add more resources]
+    
+    NN --> BBB[Update status]
+    OO --> CCC[Senior intervention]
+    PP --> BBB
+    QQ --> BBB
+    RR --> BBB
+    SS --> DDD[Wait for gas drop]
+    TT --> BBB
+    UU --> EEE[Fix API issues]
+    VV --> BBB
+    WW --> FFF[Restore from snapshot]
+    XX --> BBB
+    YY --> GGG[Fix auth system]
+    ZZ --> BBB
+    AAA --> HHH[Deploy more instances]
+    
+    BBB --> III[Log incident]
+    CCC --> III
+    DDD --> III
+    EEE --> III
+    FFF --> III
+    GGG --> III
+    HHH --> III
+    
+    III --> JJJ[Post-mortem analysis]
+    JJJ --> KKK[Update procedures]
+    KKK --> LLL[Train team]
+    LLL --> MMM[Prevent future issues]
+    
+    style A fill:#ffebee
+    style M fill:#ffebee
+    style O fill:#ffebee
+    style Q fill:#ffebee
+    style S fill:#ffebee
+    style U fill:#ffebee
+    style OO fill:#ffebee
+    style EEE fill:#ffebee
+    style FFF fill:#ffebee
+    style GGG fill:#ffebee
+    style HHH fill:#ffebee
+    
+    style NN fill:#e8f5e8
+    style PP fill:#e8f5e8
+    style RR fill:#e8f5e8
+    style TT fill:#e8f5e8
+    style VV fill:#e8f5e8
+    style XX fill:#e8f5e8
+    style ZZ fill:#e8f5e8
+    style BBB fill:#e8f5e8
+    style MMM fill:#e8f5e8
 ```
 
-### 10.10 Sơ đồ User Experience Flow
-*Trải nghiệm người dùng trước, trong và sau migration.*
-```mermaid
-journey
-    ...
-```
-
-### 10.11 Sơ đồ Quyền & Phân vai Migration
-*Phân quyền, trách nhiệm và phối hợp giữa các vai trò trong migration.*
-```mermaid
-graph TD
-    ...
-```
-
-### 10.12 Sơ đồ Alert & Notification Flow
-*Quy trình cảnh báo, thông báo khi có lỗi hoặc sự kiện quan trọng trong migration.*
-```mermaid
-flowchart TD
-    ...
-```
-
-### 10.13 Sơ đồ Quy trình Rollback Chi tiết
-*Các bước rollback, khôi phục migration khi phát hiện lỗi nghiêm trọng.*
-```mermaid
-flowchart TD
-    ...
-```
-
-### 10.14 Sơ đồ Tích hợp Đa môi trường
-*Quy trình migration thử nghiệm (staging) trước khi lên production.*
-```mermaid
-graph LR
-    ...
-```
 
 ### 10.15 Sơ đồ Hỗ trợ Người dùng sau Migration
 *Quy trình hỗ trợ, xác minh và giải đáp cho người dùng sau migration.*
 ```mermaid
 flowchart TD
-    ...
+    A[User gặp vấn đề] --> B{Kiểm tra loại vấn đề}
+    
+    B -->|Không đăng nhập được| C[Hướng dẫn tạo wallet mới]
+    B -->|Không thấy donation| D[Kiểm tra transaction hash]
+    B -->|Số dư không đúng| E[Đối soát với blockchain]
+    B -->|Không hiểu blockchain| F[Hướng dẫn sử dụng]
+    B -->|Lỗi kỹ thuật| G[Chuyển cho dev team]
+    
+    C --> H[Gửi email hướng dẫn]
+    D --> I[Kiểm tra explorer]
+    E --> J[So sánh với DB cũ]
+    F --> K[Gửi video tutorial]
+    G --> L[Tạo ticket support]
+    
+    H --> M{User hiểu chưa?}
+    I --> N{Transaction có tồn tại?}
+    J --> O{Số dư có khớp?}
+    K --> P{User cần hỗ trợ thêm?}
+    L --> Q[Dev team xử lý]
+    
+    M -->|Chưa| R[Gọi điện hỗ trợ]
+    M -->|Rồi| S[Hoàn thành]
+    N -->|Có| T[Hiển thị transaction]
+    N -->|Không| U[Kiểm tra migration log]
+    O -->|Có| V[Xác nhận với user]
+    O -->|Không| W[Điều tra lỗi]
+    P -->|Có| X[Chat support trực tiếp]
+    P -->|Không| Y[Hoàn thành]
+    Q --> Z[Fix bug và update]
+    
+    R --> AA[Giải thích chi tiết]
+    T --> BB[User xác nhận]
+    U --> CC[Kiểm tra lại migration]
+    V --> DD[User hài lòng]
+    W --> EE[Rollback nếu cần]
+    X --> FF[Giải đáp thắc mắc]
+    Z --> GG[Thông báo user]
+    
+    AA --> S
+    BB --> S
+    CC --> T
+    DD --> S
+    EE --> V
+    FF --> Y
+    GG --> S
+    
+    style A fill:#ffebee
+    style S fill:#e8f5e8
+    style Y fill:#e8f5e8
+    style DD fill:#e8f5e8
+    style L fill:#fff3e0
+    style Q fill:#fff3e0
+    style EE fill:#ffebee
 ```
 
 ---
