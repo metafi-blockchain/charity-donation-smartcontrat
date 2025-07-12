@@ -471,23 +471,23 @@ graph TB
 
 **Authentication API**
 - ✅ `POST /auth/v1/auth/google` - Xác thực Google
-- ✅ `POST /auth/v1/auth/twitter/callback` - Xác thực Twitter
+- ✅ `POST /auth/v1/auth/twitter` - Xác thực Twitter
 - ✅ `POST /auth/v1/auth/discord` - Xác thực Discord
 - ✅ `POST /auth/v1/auth/telegram` - Xác thực Telegram
 - ✅ `POST /auth/v1/auth/login` - Đăng nhập email
 - ✅ `POST /auth/v1/auth/refresh` - Làm mới token
 
 **Campaign API**
-- ✅ `GET /charity/v1/campaigns` - Danh sách chiến dịch
-- ✅ `GET /charity/v1/campaigns/{id}` - Chi tiết chiến dịch
+- ✅ `GET /charity/v1/public/campaigns` - Danh sách chiến dịch
+- ✅ `GET /charity/v1/public/campaigns/{id}` - Chi tiết chiến dịch
 - ✅ `POST /charity/v1/campaigns` - Tạo chiến dịch
 - ✅ `PUT /charity/v1/campaigns/{id}` - Cập nhật chiến dịch
 - ✅ `DELETE /charity/v1/campaigns/{id}` - Xóa chiến dịch
 
 **User Management API**
-- ✅ `GET /charity/v1/users/profile` - Hồ sơ người dùng
-- ✅ `PUT /charity/v1/users/profile` - Cập nhật hồ sơ
-- ✅ `GET /charity/v1/users/donations` - Lịch sử quyên góp
+- ✅ `GET /charity/v1/public/users` - Hồ sơ người dùng
+- ✅ `PUT /charity/v1/users/me` - Cập nhật hồ sơ
+- ✅ `GET /charity/v1/public/donations/user` - Lịch sử quyên góp của người dùng
 - ✅ `POST /charity/v1/uploads` - Tải phương tiện lên
 
 ---
