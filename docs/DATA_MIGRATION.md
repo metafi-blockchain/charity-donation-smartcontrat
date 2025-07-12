@@ -169,7 +169,52 @@ graph TD
     A[Hệ thống Cũ] --> B[Đường ống Chuyển đổi]
     B --> C[Blockchain + API Database]
     C --> D[Ứng dụng Web]
-    ...
+    
+    subgraph "Hệ thống Cũ"
+        A1[MySQL Database]
+        A2[File Storage]
+        A3[User Authentication]
+    end
+    
+    subgraph "Migration Pipeline"
+        B1[Data Extraction]
+        B2[Data Validation]
+        B3[Contract Deployment]
+        B4[Transaction Migration]
+    end
+    
+    subgraph "Blockchain Layer"
+        C1[Smart Contracts]
+        C2[Token VND]
+        C3[Transaction History]
+    end
+    
+    subgraph "API & Database"
+        C4[MongoDB]
+        C5[AWS S3]
+        C6[API Backend]
+    end
+    
+    subgraph "Frontend"
+        D1[React App]
+        D2[Wallet Integration]
+        D3[User Interface]
+    end
+    
+    A1 --> B1
+    A2 --> B1
+    A3 --> B1
+    B1 --> B2
+    B2 --> B3
+    B3 --> C1
+    B4 --> C2
+    C1 --> C4
+    C2 --> C4
+    C3 --> C4
+    C4 --> C6
+    C6 --> D1
+    D1 --> D2
+    D2 --> D3
 ```
 
 ### 10.2 Sơ đồ Luồng Dữ liệu Chi tiết
@@ -219,14 +264,84 @@ sequenceDiagram
 *Quản lý thời gian, các giai đoạn và dependencies của migration.*
 ```mermaid
 gantt
-    ...
+    title Migration Timeline
+    dateFormat  YYYY-MM-DD
+    section Chuẩn bị
+    Kiểm toán dữ liệu    :done, audit, 2024-01-01, 2024-01-07
+    Sao lưu hệ thống     :done, backup, 2024-01-08, 2024-01-10
+    Thiết lập môi trường  :done, setup, 2024-01-11, 2024-01-14
+    
+    section Triển khai Blockchain
+    Deploy Token VND      :deploy, 2024-01-15, 2024-01-16
+    Deploy Manager        :deploy, 2024-01-17, 2024-01-18
+    Deploy Campaigns      :deploy, 2024-01-19, 2024-01-25
+    
+    section Migration Dữ liệu
+    User Migration        :migration, 2024-01-26, 2024-02-02
+    Campaign Migration    :migration, 2024-02-03, 2024-02-09
+    Donation Migration    :migration, 2024-02-10, 2024-02-16
+    Withdrawal Migration  :migration, 2024-02-17, 2024-02-23
+    
+    section Xác minh
+    Data Verification     :verify, 2024-02-24, 2024-02-28
+    User Testing          :test, 2024-02-29, 2024-03-05
+    Performance Testing   :test, 2024-03-06, 2024-03-10
+    
+    section Go Live
+    Production Launch     :launch, 2024-03-11, 2024-03-12
+    Monitoring           :monitor, 2024-03-13, 2024-03-20
 ```
 
 ### 10.4 Sơ đồ Smart Contract
 *Thiết kế kỹ thuật các smart contract chính trong hệ thống.*
 ```mermaid
 classDiagram
-    ...
+    class Campaign {
+        +address campaignAddress
+        +address managerAddress
+        +uint256 targetAmount
+        +uint256 currentAmount
+        +bool isActive
+        +mapping(address => uint256) donations
+        +donate(address donor, uint256 amount)
+        +withdraw(address recipient, uint256 amount)
+        +getCampaignInfo() CampaignInfo
+        +updateStatus(bool active)
+    }
+    
+    class Manager {
+        +address owner
+        +mapping(address => bool) campaigns
+        +mapping(address => address) userWallets
+        +createCampaign(string name, uint256 target)
+        +registerUser(address user, address wallet)
+        +approveCampaign(address campaign)
+        +getUserWallet(address user) address
+    }
+    
+    class Token {
+        +string name
+        +string symbol
+        +uint256 totalSupply
+        +mapping(address => uint256) balanceOf
+        +mapping(address => mapping(address => uint256)) allowance
+        +mint(address to, uint256 amount)
+        +transfer(address to, uint256 amount)
+        +approve(address spender, uint256 amount)
+        +transferFrom(address from, address to, uint256 amount)
+    }
+    
+    class CurrencyConvert {
+        +mapping(string => uint256) exchangeRates
+        +convertToVND(uint256 amount, string currency) uint256
+        +updateExchangeRate(string currency, uint256 rate)
+        +getExchangeRate(string currency) uint256
+    }
+    
+    Manager ||--o{ Campaign : manages
+    Campaign ||--o{ Token : uses
+    Manager ||--o{ Token : manages
+    CurrencyConvert ||--o{ Campaign : provides rates
 ```
 
 ### 10.5 Sơ đồ Luồng Xử lý Donation Migration
@@ -303,6 +418,87 @@ flowchart TD
     style N fill:#fff3e0
 ```
 
+### 10.7 Sơ đồ Cấu trúc Dữ liệu API
+*Minh họa cấu trúc bảng dữ liệu chính của API backend.*
+```mermaid
+erDiagram
+    USERS {
+        string user_id PK
+        string email
+        string wallet_address
+        string private_key_encrypted
+        string seed_phrase_encrypted
+        uint256 vnd_balance
+        datetime created_at
+        datetime updated_at
+        string migration_status
+    }
+    
+    CAMPAIGNS {
+        string campaign_id PK
+        string legacy_campaign_id
+        string blockchain_contract_address
+        string manager_contract_address
+        string admin_wallet_address
+        string name
+        string description
+        uint256 target_amount
+        uint256 current_amount
+        bool is_active
+        datetime created_at
+        string creation_tx_hash
+        string verification_status
+    }
+    
+    DONATIONS {
+        string donation_id PK
+        string campaign_id FK
+        string user_id FK
+        string donor_wallet_address
+        string token_address
+        string token_symbol
+        uint256 amount_original
+        uint256 amount_wei
+        string blockchain_tx_hash
+        string bank_transaction_id
+        string message
+        datetime donation_time
+        uint256 block_number
+        uint256 gas_used
+        uint256 tx_fee
+        string status
+        bool migration_source
+        string explorer_url
+    }
+    
+    WITHDRAWALS {
+        string withdrawal_id PK
+        string campaign_id FK
+        string recipient_wallet_address
+        uint256 amount
+        string blockchain_tx_hash
+        datetime withdrawal_time
+        string status
+        string reason
+    }
+    
+    MIGRATION_LOGS {
+        string log_id PK
+        string entity_type
+        string entity_id
+        string action
+        string status
+        string error_message
+        datetime created_at
+        string operator_id
+    }
+    
+    USERS ||--o{ DONATIONS : makes
+    CAMPAIGNS ||--o{ DONATIONS : receives
+    CAMPAIGNS ||--o{ WITHDRAWALS : processes
+    USERS ||--o{ MIGRATION_LOGS : tracked_by
+    CAMPAIGNS ||--o{ MIGRATION_LOGS : tracked_by
+```
 
 
 ### 10.8 Sơ đồ Monitoring Dashboard
@@ -496,52 +692,85 @@ flowchart TD
     B -->|Số dư không đúng| E[Đối soát với blockchain]
     B -->|Không hiểu blockchain| F[Hướng dẫn sử dụng]
     B -->|Lỗi kỹ thuật| G[Chuyển cho dev team]
+    B -->|Quên mật khẩu| H[Reset wallet credentials]
+    B -->|Không thấy campaign| I[Kiểm tra campaign mapping]
     
-    C --> H[Gửi email hướng dẫn]
-    D --> I[Kiểm tra explorer]
-    E --> J[So sánh với DB cũ]
-    F --> K[Gửi video tutorial]
-    G --> L[Tạo ticket support]
+    C --> J[Gửi email hướng dẫn]
+    D --> K[Kiểm tra explorer]
+    E --> L[So sánh với DB cũ]
+    F --> M[Gửi video tutorial]
+    G --> N[Tạo ticket support]
+    H --> O[Gửi reset link]
+    I --> P[Kiểm tra campaign status]
     
-    H --> M{User hiểu chưa?}
-    I --> N{Transaction có tồn tại?}
-    J --> O{Số dư có khớp?}
-    K --> P{User cần hỗ trợ thêm?}
-    L --> Q[Dev team xử lý]
+    J --> Q{User hiểu chưa?}
+    K --> R{Transaction có tồn tại?}
+    L --> S{Số dư có khớp?}
+    M --> T{User cần hỗ trợ thêm?}
+    N --> U[Dev team xử lý]
+    O --> V{Reset thành công?}
+    P --> W{Campaign có migrated?}
     
-    M -->|Chưa| R[Gọi điện hỗ trợ]
-    M -->|Rồi| S[Hoàn thành]
-    N -->|Có| T[Hiển thị transaction]
-    N -->|Không| U[Kiểm tra migration log]
-    O -->|Có| V[Xác nhận với user]
-    O -->|Không| W[Điều tra lỗi]
-    P -->|Có| X[Chat support trực tiếp]
-    P -->|Không| Y[Hoàn thành]
-    Q --> Z[Fix bug và update]
+    Q -->|Chưa| X[Gọi điện hỗ trợ]
+    Q -->|Rồi| Y[Hoàn thành]
+    R -->|Có| Z[Hiển thị transaction]
+    R -->|Không| AA[Kiểm tra migration log]
+    S -->|Có| BB[Xác nhận với user]
+    S -->|Không| CC[Điều tra lỗi]
+    T -->|Có| DD[Chat support trực tiếp]
+    T -->|Không| EE[Hoàn thành]
+    U --> FF[Fix bug và update]
+    V -->|Có| GG[Gửi new credentials]
+    V -->|Không| HH[Manual reset process]
+    W -->|Có| II[Hiển thị campaign]
+    W -->|Không| JJ[Notify admin]
     
-    R --> AA[Giải thích chi tiết]
-    T --> BB[User xác nhận]
-    U --> CC[Kiểm tra lại migration]
-    V --> DD[User hài lòng]
-    W --> EE[Rollback nếu cần]
-    X --> FF[Giải đáp thắc mắc]
-    Z --> GG[Thông báo user]
+    X --> KK[Giải thích chi tiết]
+    Z --> LL[User xác nhận]
+    AA --> MM[Kiểm tra lại migration]
+    BB --> NN[User hài lòng]
+    CC --> OO[Rollback nếu cần]
+    DD --> PP[Giải đáp thắc mắc]
+    FF --> QQ[Thông báo user]
+    GG --> RR[User test login]
+    HH --> SS[Admin intervention]
+    II --> TT[User verify campaign]
+    JJ --> UU[Manual campaign setup]
     
-    AA --> S
-    BB --> S
-    CC --> T
-    DD --> S
-    EE --> V
-    FF --> Y
-    GG --> S
+    KK --> Y
+    LL --> Y
+    MM --> Z
+    NN --> Y
+    OO --> BB
+    PP --> EE
+    QQ --> Y
+    RR --> VV{Login thành công?}
+    SS --> WW[Manual wallet setup]
+    TT --> XX{Campaign hiển thị?}
+    UU --> YY[Campaign activated]
+    
+    VV -->|Có| Y
+    VV -->|Không| ZZ[Escalate to senior]
+    WW --> Y
+    XX -->|Có| Y
+    XX -->|Không| AAA[Debug campaign display]
+    YY --> Y
+    
+    ZZ --> BBB[Senior support call]
+    AAA --> CCC[Fix display issue]
+    
+    BBB --> Y
+    CCC --> Y
     
     style A fill:#ffebee
-    style S fill:#e8f5e8
     style Y fill:#e8f5e8
-    style DD fill:#e8f5e8
-    style L fill:#fff3e0
-    style Q fill:#fff3e0
-    style EE fill:#ffebee
+    style EE fill:#e8f5e8
+    style NN fill:#e8f5e8
+    style N fill:#fff3e0
+    style U fill:#fff3e0
+    style OO fill:#ffebee
+    style ZZ fill:#ffebee
+    style AAA fill:#ffebee
 ```
 
 ---
