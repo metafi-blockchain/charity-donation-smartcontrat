@@ -24,7 +24,7 @@
 
 ### 2.1 Tổng quan kiến trúc
 ```
-Hệ thống Cũ → Đường ống Chuyển đổi → Blockchain + API DB → Ứng dụng Web
+Hệ thống Cũ → Data Migration Pipeline → Blockchain + API DB → Ứng dụng Web
 ```
 
 ### 2.2 Thành phần chính
@@ -647,4 +647,3 @@ flowchart TD
 ## 11. Kết luận
 - Quá trình migration dữ liệu sang blockchain giúp hệ thống minh bạch, tin cậy, tự động hóa, nâng cao trải nghiệm và niềm tin người dùng.
 - Đảm bảo kiểm soát rủi ro, tuân thủ, xác minh toàn diện và sẵn sàng mở rộng trong tương lai.
-
