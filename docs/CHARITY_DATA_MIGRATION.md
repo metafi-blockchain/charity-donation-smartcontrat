@@ -1,25 +1,9 @@
 # TÀI LIỆU MIGRATION HỆ THỐNG TỪ THIỆN
 
-## Mục lục
-1. [Mục đích & Phạm vi](#1-mục-đích--phạm-vi)
-2. [Kiến trúc chuyển đổi](#2-kiến-trúc-chuyển-đổi)
-3. [Quy trình chuyển đổi chi tiết](#3-quy-trình-chuyển-đổi-chi-tiết)
-4. [Tích hợp API & Cơ sở dữ liệu](#4-tích-hợp-api--cơ-sở-dữ-liệu)
-5. [Tích hợp giao diện người dùng](#5-tích-hợp-giao-diện-người-dùng)
-6. [An toàn & Tuân thủ](#6-an-toàn--tuân-thủ)
-7. [Quản lý rủi ro & tình huống khẩn cấp](#7-quản-lý-rủi-ro--tình-huống-khẩn-cấp)
-8. [Tiêu chí thành công & xác thực](#8-tiêu-chí-thành-công--xác-thực)
-9. [Thời gian & tài nguyên](#9-thời-gian--tài-nguyên)
-10. [Sơ đồ tổng quan & kỹ thuật](#10-sơ-đồ-tổng-quan--kỹ-thuật)
-11. [Kết luận](#11-kết-luận)
-
----
-
 ## 1. Mục đích & Phạm vi
-
 ### 1.1 Mục đích chuyển đổi
-- Chuyển đổi toàn bộ dữ liệu từ hệ thống từ thiện hiện tại sang blockchain Avalanche C-Chain.
-- Nâng cao tính minh bạch, khả năng kiểm chứng và tự động hóa quy trình quyên góp.
+- Chuyển đổi toàn bộ dữ liệu hệ thống từ thiện hiện tại sang blockchain Avalanche C-Chain.
+- Nâng cao tính minh bạch, kiểm chứng, tự động hóa quy trình quyên góp.
 
 ### 1.2 Phạm vi dữ liệu
 - **Người dùng:** >10,000 tài khoản
@@ -36,7 +20,7 @@
 
 ---
 
-## 2. Kiến trúc chuyển đổi
+## 2. Kiến trúc tổng quan
 
 ### 2.1 Tổng quan kiến trúc
 ```
@@ -58,19 +42,45 @@ Hệ thống Cũ → Đường ống Chuyển đổi → Blockchain + API DB →
 
 ---
 
-## 3. Quy trình chuyển đổi chi tiết
+## 3. Quy trình migration chi tiết
 
-### 3.1 Chuẩn bị
-- Kiểm toán, sao lưu, thiết lập môi trường, trích xuất dữ liệu
+### 3.1 Giai đoạn chuẩn bị
+- **Mục tiêu:** Đảm bảo dữ liệu nguồn sạch, môi trường sẵn sàng, kiểm soát rủi ro trước khi migration.
+- **Các bước:**
+  1. Kiểm toán & đánh giá dữ liệu nguồn:
+     - Rà soát, kiểm thử, đối chiếu, lập báo cáo và kế hoạch khắc phục.
+  2. Thiết lập môi trường, logging, giám sát:
+     - Kết nối testnet, chuẩn bị ví quản trị, cấu hình gas, logging pipeline, dashboard giám sát, cảnh báo tự động.
+  3. Báo cáo tổng hợp & xác nhận chất lượng dữ liệu:
+     - Lập báo cáo tổng hợp, đối chiếu số liệu, đánh giá mức độ hoàn thành.
+- **Kết quả đầu ra:** Dữ liệu sạch, môi trường sẵn sàng, có báo cáo kiểm toán và kế hoạch khắc phục.
 
-### 3.2 Triển khai blockchain
-- Deploy token, contract chuyển đổi, quản lý, tạo ví, ánh xạ user
+### 3.2 Giai đoạn triển khai blockchain
+- **Mục tiêu:** Đảm bảo hạ tầng blockchain, smart contract, ví người dùng sẵn sàng cho migration.
+- **Các bước:**
+  1. Deploy các smart contract (Token, CurrencyConvert, Manager, Campaign).
+  2. Thiết lập ví blockchain cho từng user, ánh xạ legacy_user_id ↔ blockchain_address.
+  3. Cấu hình quyền, logging sự kiện, lưu trữ mapping contract.
+- **Kết quả đầu ra:** Hệ thống blockchain, smart contract, ví user đã sẵn sàng, mapping đầy đủ.
 
-### 3.3 Chuyển đổi dữ liệu
-- Gọi donate/withdraw, mapping, đồng bộ API, upload media
+### 3.3 Giai đoạn chuyển đổi dữ liệu
+- **Mục tiêu:** Chuyển đổi toàn bộ dữ liệu giao dịch, chiến dịch, người dùng lên blockchain và đồng bộ hệ thống mới.
+- **Các bước:**
+  1. Chuyển đổi giao dịch quyên góp (donate):
+     - Gọi donate(token, amount), xử lý theo thứ tự thời gian, mapping bank transaction ↔ blockchain tx.
+  2. Chuyển đổi giao dịch rút tiền (withdraw):
+     - Thực hiện withdraw, ghi nhận lý do, quy trình phê duyệt, mapping.
+  3. Đồng bộ API, upload media:
+     - Tạo bản ghi qua API, cập nhật migration_source, explorer_url, upload hình ảnh/video lên S3, cập nhật metadata.
+- **Kết quả đầu ra:** Dữ liệu giao dịch, chiến dịch, người dùng đã migrate lên blockchain, đồng bộ API/backend/frontend.
 
-### 3.4 Xác minh
-- Đối soát số dư, giao dịch, kiểm thử chức năng
+### 3.4 Giai đoạn xác minh & hoàn thiện
+- **Mục tiêu:** Đảm bảo tính toàn vẹn, chính xác, xác thực dữ liệu sau migration.
+- **Các bước:**
+  1. Đối soát số dư, giao dịch giữa hệ thống cũ và blockchain.
+  2. Kiểm thử chức năng, xác minh dữ liệu, kiểm tra mapping.
+  3. Lập báo cáo hoàn thành, chuẩn bị go-live.
+- **Kết quả đầu ra:** Dữ liệu đã xác minh, sẵn sàng vận hành chính thức.
 
 ---
 
@@ -129,31 +139,26 @@ Hệ thống Cũ → Đường ống Chuyển đổi → Blockchain + API DB →
 ---
 
 ## 5. Tích hợp giao diện người dùng
-
 - Hiển thị badge xác minh blockchain, liên kết explorer, lịch sử quyên góp, trạng thái migration, dashboard xác minh quản trị.
 
 ---
 
 ## 6. An toàn & Tuân thủ
-
 - Mã hóa dữ liệu, quản lý khóa, kiểm toán, tuân thủ GDPR, xác minh đa cấp, kiểm soát truy cập, đa chữ ký.
 
 ---
 
 ## 7. Quản lý rủi ro & tình huống khẩn cấp
-
 - Backup, rollback, khôi phục, cảnh báo, hỗ trợ người dùng, đào tạo đội ngũ.
 
 ---
 
 ## 8. Tiêu chí thành công & xác thực
-
 - 100% dữ liệu chuyển đổi, không sai lệch tài chính, lỗi giao dịch <0.1%, xác minh người dùng >95%, tăng niềm tin người dùng.
 
 ---
 
 ## 9. Thời gian & tài nguyên
-
 - **Tổng thời gian:** 7 tuần (chuẩn bị, triển khai, chuyển đổi, xác minh)
 - **Nhân sự:** 3-4 dev blockchain, 2 QA, 1 PM
 - **Hạ tầng:** Avalanche testnet, AWS, API
@@ -292,7 +297,7 @@ gantt
     Monitoring           :monitor, 2024-03-13, 2024-03-20
 ```
 
-### 10.5 Sơ đồ Luồng Xử lý Donation Migration
+### 10.4 Sơ đồ Luồng Xử lý Donation Migration
 *Quy trình từng bước xử lý migration cho từng donation.*
 ```mermaid
 flowchart TD
@@ -328,7 +333,7 @@ flowchart TD
     style L fill:#ffebee
 ```
 
-### 10.6 Sơ đồ Verification Process
+### 10.5 Sơ đồ Verification Process
 *Đảm bảo tính chính xác, đối soát dữ liệu giữa hệ thống cũ và blockchain.*
 ```mermaid
 flowchart TD
@@ -366,7 +371,7 @@ flowchart TD
     style N fill:#fff3e0
 ```
 
-### 10.8 Sơ đồ Monitoring Dashboard
+### 10.6 Sơ đồ Monitoring Dashboard
 *Theo dõi tiến độ migration, sức khỏe hệ thống và độ chính xác dữ liệu.*
 ```mermaid
 graph TD
@@ -428,7 +433,7 @@ graph TD
     style G fill:#e0f2f1
 ```
 
-### 10.9 Sơ đồ Emergency Recovery Plan
+### 10.7 Sơ đồ Emergency Recovery Plan
 *Quy trình xử lý sự cố, rollback và khôi phục migration.*
 ```mermaid
 flowchart TD
@@ -545,8 +550,7 @@ flowchart TD
     style MMM fill:#e8f5e8
 ```
 
-
-### 10.15 Sơ đồ Hỗ trợ Người dùng sau Migration
+### 10.8 Sơ đồ Hỗ trợ Người dùng sau Migration
 *Quy trình hỗ trợ, xác minh và giải đáp cho người dùng sau migration.*
 ```mermaid
 flowchart TD
@@ -641,6 +645,6 @@ flowchart TD
 ---
 
 ## 11. Kết luận
-
-Quá trình migration dữ liệu sang blockchain minh bạch, tin cậy, tự động hóa cho
+- Quá trình migration dữ liệu sang blockchain giúp hệ thống minh bạch, tin cậy, tự động hóa, nâng cao trải nghiệm và niềm tin người dùng.
+- Đảm bảo kiểm soát rủi ro, tuân thủ, xác minh toàn diện và sẵn sàng mở rộng trong tương lai.
 
