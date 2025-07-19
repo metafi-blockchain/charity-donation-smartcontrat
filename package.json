@@ -6,7 +6,7 @@
     "compile": "npx hardhat compile",
     "deploy:bscTestnet": "npx hardhat run --network bscTestnet scripts/deploy-testnet.ts",
     "deploy:avalTestnet": "npx hardhat run --network avalTestnet scripts/deploy-testnet.ts",
-    "deploy:mainnet": "npx hardhat run --network mainnet scripts/deploy.ts",
+    "deploy:avalMainnet": "npx hardhat run --network avalMainnet scripts/deploy-mainnet.ts",
     "test": "npx hardhat test",
     "test:coverage": "npx hardhat coverage",
     "test:size-contracts": "npx hardhat size-contracts"

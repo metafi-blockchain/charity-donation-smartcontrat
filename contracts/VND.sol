@@ -4,7 +4,7 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IToken} from "./interface/IToken.sol";
 
-contract Token is ERC20, Ownable, IToken {
+contract VND is ERC20, Ownable, IToken {
     mapping(address => bool) minters;
 
     constructor() ERC20("VND", "VND") Ownable(_msgSender()) {

@@ -7,7 +7,7 @@ const bscTestnet: NetworkUserConfig = {
   url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
   chainId: 97,
   accounts: [
-    "86cbe5362c5b397af09779e56820eb855086240d572ed38e12186072427a0d88",
+    "a7006c66b45d234ffd75a4d7cb86ca5b71472a524d90735a2ec411ef427eff26",
   ],
 };
 
@@ -15,7 +15,7 @@ const avalTestnet: NetworkUserConfig = {
   url: "https://ava-testnet.public.blastapi.io/ext/bc/C/rpc",
   chainId: 43113,
   accounts: [
-    "86cbe5362c5b397af09779e56820eb855086240d572ed38e12186072427a0d88",
+    "a7006c66b45d234ffd75a4d7cb86ca5b71472a524d90735a2ec411ef427eff26",
   ],
 };
 
@@ -23,7 +23,15 @@ const bscMainnet: NetworkUserConfig = {
   url: "https://bsc-dataseed.binance.org/",
   chainId: 56,
   accounts: [
-    "86cbe5362c5b397af09779e56820eb855086240d572ed38e12186072427a0d88",
+    "a7006c66b45d234ffd75a4d7cb86ca5b71472a524d90735a2ec411ef427eff26",
+  ],
+};
+
+const avalMainnet: NetworkUserConfig = {
+  url: "https://avalanche.api.onfinality.io/public/ext/bc/C/rpc",
+  chainId: 43114,
+  accounts: [
+    "a7006c66b45d234ffd75a4d7cb86ca5b71472a524d90735a2ec411ef427eff26",
   ],
 };
 
@@ -32,6 +40,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       snowtrace: "GIZ1V79NH9J1E659CXFWHNNSKYGAFK8Q3W", // apiKey is not required, just set a placeholder
+      avalanche:"GIZ1V79NH9J1E659CXFWHNNSKYGAFK8Q3W"
     },
     customChains: [
       {
@@ -50,6 +59,7 @@ const config: HardhatUserConfig = {
     bscTestnet: bscTestnet,
     bscMainnet: bscMainnet,
     avalTestnet: avalTestnet,
+    avalMainnet: avalMainnet,
   },
   solidity: {
     compilers: [
