@@ -8,6 +8,7 @@ import {IManager} from "./interface/IManager.sol";
 import {UserManager} from "./UserManager.sol";
 import {Campaign} from "./Campaign.sol";
 import {RateManager} from "./RateManager.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Manager is IManager, AccessControl, Ownable {
     using EnumerableSet for EnumerableSet.AddressSet;
@@ -19,7 +20,7 @@ contract Manager is IManager, AccessControl, Ownable {
     UserManager public userManager;
 
     event CreateCampaignEvent(
-        string name,
+        string id,
         uint256 startTime,
         uint256 endTime,
         uint256 target,
@@ -51,19 +52,19 @@ contract Manager is IManager, AccessControl, Ownable {
 
     function createCampaign(
         string calldata _id,
-        string calldata _name,
         uint256 _startTime,
         uint256 _endTime,
         uint256 _target,
-        address _admin
+        address _admin,
+        IERC20 _token
     ) public onlyAdmin returns (address) {
         require(idToCampaign[_id] == address(0), "Error: ID invalid");
         Campaign campaign = new Campaign(
-            _name,
             _startTime,
             _endTime,
             _target,
             _admin,
+            _token,
             address(this)
         );
         campaigns.add(address(campaign));
@@ -72,7 +73,7 @@ contract Manager is IManager, AccessControl, Ownable {
         userManager.create(address(campaign), _admin);
 
         emit CreateCampaignEvent(
-            _name,
+            _id,
             _startTime,
             _endTime,
             _target,
@@ -83,28 +84,28 @@ contract Manager is IManager, AccessControl, Ownable {
 
     function createCampaigns(
         string[] calldata _ids,
-        string[] calldata _names,
         uint256[] calldata _startTimes,
         uint256[] calldata _endTimes,
         uint256[] calldata _targets,
-        address[] calldata _admins
+        address[] calldata _admins,
+        IERC20[] calldata _tokens
     ) public onlyAdmin {
         require(
-            _ids.length == _names.length &&
-                _ids.length == _startTimes.length &&
+            _ids.length == _startTimes.length &&
                 _ids.length == _endTimes.length &&
                 _ids.length == _targets.length &&
-                _ids.length == _admins.length,
+                _ids.length == _admins.length &&
+                _ids.length == _tokens.length,
             "Error: Input invalid"
         );
         for (uint16 i = 0; i < _ids.length; i++) {
             createCampaign(
                 _ids[i],
-                _names[i],
                 _startTimes[i],
                 _endTimes[i],
                 _targets[i],
-                _admins[i]
+                _admins[i],
+                _tokens[i]
             );
         }
     }

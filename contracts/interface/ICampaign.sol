@@ -12,15 +12,11 @@ interface ICampaign {
 
     function getStatus() external view returns (Status);
 
-    function donate(
-        address _token,
-        uint256 _amount,
-        string memory _message
-    ) external payable;
+    function donate(uint256 _amount, string memory _message) external;
 
     // function delegateDonate(address _token, uint256 _amount, uint256 _user) external ;
 
-    function withdraw(address _token, uint256 _amount) external;
+    function withdraw(uint256 _amount) external;
 
     function setupConfig(
         uint256 _startTime,
@@ -28,31 +24,8 @@ interface ICampaign {
         uint256 _target
     ) external;
 
-    function getUsers() external returns (address[] memory, uint256[] memory);
-
-    function getBalances()
-        external
-        view
-        returns (
-            uint256,
-            uint256,
-            address[] memory,
-            uint256[] memory,
-            uint256[] memory
-        );
-
     function info()
         external
         view
-        returns (
-            string memory,
-            uint256,
-            uint256,
-            uint256,
-            address,
-            Status,
-            uint256,
-            uint256,
-            uint256
-        );
+        returns (uint256, uint256, uint256, address, Status, uint256, uint256);
 }

@@ -75,7 +75,7 @@ contract UserManager is IUserManager, Ownable {
         uint256 totalAmountRaised = 0;
         uint256[] memory amountRaiseds = new uint256[](ownCampaigns.length);
         for (uint16 i = 0; i < ownCampaigns.length; i++) {
-            (, , , , , , uint256 totalRaised, , ) = ICampaign(ownCampaigns[i])
+            (, , , , , uint256 totalRaised, ) = ICampaign(ownCampaigns[i])
                 .info();
             totalAmountRaised += totalRaised;
             amountRaiseds[i] = totalRaised;
