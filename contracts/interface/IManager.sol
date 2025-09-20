@@ -9,7 +9,7 @@ interface IManager {
         uint256 _endTime,
         uint256 _target,
         address _admin,
-        IERC20 _token
+        address _token
     ) external returns (address);
 
     function createCampaigns(
@@ -18,7 +18,7 @@ interface IManager {
         uint256[] calldata _endTimes,
         uint256[] calldata _targets,
         address[] calldata _admins,
-        IERC20[] calldata _tokens
+        address[] calldata _tokens
     ) external;
 
     function setupCampaignAdmin(
@@ -34,10 +34,6 @@ interface IManager {
     ) external;
 
     function getCampaign(string calldata _id) external view returns (address);
-
-    function getRateManager() external returns (address);
-
-    function getUserManager() external returns (address);
 
     function exist(address _campaign) external returns (bool);
 }

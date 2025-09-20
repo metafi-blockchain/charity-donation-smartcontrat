@@ -1,0 +1,13 @@
+{
+  "network": "avalMainnet",
+  "chainId": "43114",
+  "deployer": "0xC1e23A2b6dBEC25aF60E2d7208208E77BE4A4547",
+  "timestamp": "2025-09-19T13:54:00.195Z",
+  "contracts": {
+    "forwarder": {
+      "name": "MetafiForwarder",
+      "address": "0xE1c5B3Da816eAca56d9481CD7dD4B5B7f7f4C0b1",
+      "constructorArgs": []
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "network": "avalMainnet",
+  "chainId": "43114",
+  "timestamp": "2025-09-19T14:01:36.255Z",
+  "contracts": {
+    "manager": "0xDCAD502C13bBE870601ae23BBCAcbF7c6cCb5e7C",
+    "token": "0x3B8e805A03bE274f9DeE921704FB1fD27a67eF4B",
+    "forwarder": "0xE1c5B3Da816eAca56d9481CD7dD4B5B7f7f4C0b1"
+  },
+  "accounts": {
+    "deployer": "0xC1e23A2b6dBEC25aF60E2d7208208E77BE4A4547"
+  }
+}
