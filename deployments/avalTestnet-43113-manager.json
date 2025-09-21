@@ -1,22 +1,13 @@
 {
   "network": "avalTestnet",
   "chainId": "43113",
-  "timestamp": "2025-09-11T15:57:15.694Z",
+  "timestamp": "2025-09-20T19:49:23.811Z",
   "contracts": {
-    "manager": "0xf72a380d423BDf6D811b0bb7673b0971aBF387e4",
-    "campaign": "0xAdEb0aBc25512Cc83FcB6Fb65007C1b4D2887493",
+    "manager": "0x580FB3CE3ED9A37fe81fBEc28fd04dAdD71C7276",
     "token": "0x747B3D5cb2C092EE33067B5341Ce06FD65a3F12B",
     "forwarder": "0x6991dfA95779a152b95f4D89b0bd1Eb57D9409C6"
   },
-  "campaignConfig": {
-    "id": "demo-campaign-2024",
-    "startTime": 0,
-    "endTime": 0,
-    "target": "0",
-    "admin": "0xC97da29804F8565D59B58221fA36C82e765F7638"
-  },
   "accounts": {
-    "deployer": "0xC97da29804F8565D59B58221fA36C82e765F7638",
-    "campaignAdmin": "0xC97da29804F8565D59B58221fA36C82e765F7638"
+    "deployer": "0xC97da29804F8565D59B58221fA36C82e765F7638"
   }
 }

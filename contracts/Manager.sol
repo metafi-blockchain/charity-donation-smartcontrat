@@ -41,7 +41,8 @@ contract Manager is IManager, AccessControl, Ownable {
         );
 
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _grantRole(ADMIN_ROLE, _msgSender());
+        _setRoleAdmin(ADMIN_ROLE,DEFAULT_ADMIN_ROLE);
+        // _grantRole(ADMIN_ROLE, _msgSender());
 
         trustedForwarder = _trustedForwarder;
     }

@@ -34,6 +34,14 @@ async function main() {
   const managerAddress = await manager.getAddress();
   console.log(`✅ Manager deployed at: ${managerAddress}\n`);
 
+  // Step 2: Check can grant role
+  const createTx = await manager.grantRole(
+    ethers.keccak256(ethers.toUtf8Bytes("ADMIN_ROLES")),
+    "0x078AAD08121d49DC1b178A89a2c0EaB1Bc3F85b5"
+  );
+
+  const createReceipt = await createTx.wait();
+
   // // Step 2: Create Demo Campaign
   // console.log("4️⃣ Creating Demo Campaign...");
 
