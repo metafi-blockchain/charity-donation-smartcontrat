@@ -1,0 +1,13 @@
+{
+  "network": "metafi-chain",
+  "chainId": "90048",
+  "deployer": "0xC97da29804F8565D59B58221fA36C82e765F7638",
+  "timestamp": "2025-11-19T12:02:07.768Z",
+  "contracts": {
+    "tokenMinter": {
+      "name": "TokenMinter",
+      "address": "0x9568bFf2eD93210A62a701f41a8328f5AF9791D6",
+      "constructorArgs": []
+    }
+  }
+}

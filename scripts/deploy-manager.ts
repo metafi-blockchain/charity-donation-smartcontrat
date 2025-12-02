@@ -19,8 +19,10 @@ async function main() {
 
   // Get signers
   const [deployer] = await ethers.getSigners();
-  const forwarderAddress = "0xE1c5B3Da816eAca56d9481CD7dD4B5B7f7f4C0b1";
-  const vnd = "0x3B8e805A03bE274f9DeE921704FB1fD27a67eF4B";
+  // const forwarderAddress = "0x7324c4e6795091E04ecCc868afa2D8e41f1183D8";
+  // const vnd = "0x2A260a7fF83dbcD4405B69AE399067F59FD776aa";
+  const forwarderAddress = "0x1589Fb115438C7C95D00306C68F9986674b477BD";
+  const vnd = "0x6c56B37D0E36b3090CBBefcfaaA0c57a6a05BbF1";
 
   console.log("👥 Deployment Configuration:");
   console.log(`📋 Deployer: ${deployer.address}`);
@@ -28,16 +30,17 @@ async function main() {
 
   // Step 1: Deploy Manager
   console.log("3️⃣ Deploying Manager...");
-  const Manager = await ethers.getContractFactory("Manager");
+  const Manager = await ethers.getContractFactory("CampaingManager");
   const manager = await Manager.deploy(forwarderAddress);
   await manager.waitForDeployment();
   const managerAddress = await manager.getAddress();
   console.log(`✅ Manager deployed at: ${managerAddress}\n`);
 
   // Step 2: Check can grant role
+  const ADMIN_ROLE = await manager.ADMIN_ROLE();
   const createTx = await manager.grantRole(
-    ethers.keccak256(ethers.toUtf8Bytes("ADMIN_ROLES")),
-    "0x078AAD08121d49DC1b178A89a2c0EaB1Bc3F85b5"
+    ADMIN_ROLE,
+    "0xC1e23A2b6dBEC25aF60E2d7208208E77BE4A4547"
   );
 
   const createReceipt = await createTx.wait();

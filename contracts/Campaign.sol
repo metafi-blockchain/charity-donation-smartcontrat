@@ -4,10 +4,16 @@ pragma solidity ^0.8.20;
 import {ICampaign} from "./interface/ICampaign.sol";
 import {IManager} from "./interface/IManager.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import {
+    ReentrancyGuard
+} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {IERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
-import {ERC2771Context} from "@openzeppelin/contracts/metatx/ERC2771Context.sol";
+import {
+    IERC20Permit
+} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
+import {
+    ERC2771Context
+} from "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 import {Context} from "@openzeppelin/contracts/utils/Context.sol";
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
@@ -79,7 +85,12 @@ contract Campaign is ICampaign, ReentrancyGuard, ERC2771Context {
     }
 
     modifier validCampaign() {
-        require(getStatus() == Status.ON_GOING, "Error: Status invalid");
+        require(
+            getStatus() == Status.ON_GOING ||
+                getStatus() == Status.COMPLETE_TARGET || // allow donating when target is reached
+                getStatus() == Status.FINISHED, // allow donating when finished
+            "Error: Status invalid"
+        );
         _;
     }
 

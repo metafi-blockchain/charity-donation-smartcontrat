@@ -1,0 +1,13 @@
+{
+  "network": "mtfTestnet",
+  "chainId": "482611111",
+  "deployer": "0xE79Ed930f99Ce2A5dc8b12edc52808d17cb47Ae1",
+  "timestamp": "2025-11-21T23:41:02.327Z",
+  "contracts": {
+    "forwarder": {
+      "name": "MetafiForwarder",
+      "address": "0x145181e1007fd16D35d745b08a7B82fB9feDad74",
+      "constructorArgs": []
+    }
+  }
+}

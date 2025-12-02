@@ -1,17 +1,19 @@
 //  SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import {
+    EnumerableSet
+} from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IManager} from "./interface/IManager.sol";
 import {Campaign} from "./Campaign.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract Manager is IManager, AccessControl, Ownable {
+contract CampaingManager is IManager, AccessControl, Ownable {
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    bytes32 private constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     EnumerableSet.AddressSet campaigns;
     mapping(string => address) idToCampaign;
 
@@ -41,8 +43,8 @@ contract Manager is IManager, AccessControl, Ownable {
         );
 
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _setRoleAdmin(ADMIN_ROLE,DEFAULT_ADMIN_ROLE);
-        // _grantRole(ADMIN_ROLE, _msgSender());
+        // _setRoleAdmin(ADMIN_ROLE,DEFAULT_ADMIN_ROLE);
+        _grantRole(ADMIN_ROLE, _msgSender());
 
         trustedForwarder = _trustedForwarder;
     }

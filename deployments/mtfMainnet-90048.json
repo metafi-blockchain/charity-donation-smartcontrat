@@ -1,0 +1,13 @@
+{
+  "network": "mtfMainnet",
+  "chainId": "90048",
+  "deployer": "0xC97da29804F8565D59B58221fA36C82e765F7638",
+  "timestamp": "2025-11-18T02:27:52.950Z",
+  "contracts": {
+    "forwarder": {
+      "name": "MetafiForwarder",
+      "address": "0x1589Fb115438C7C95D00306C68F9986674b477BD",
+      "constructorArgs": []
+    }
+  }
+}

@@ -7,12 +7,29 @@ const bscTestnet: NetworkUserConfig = {
   url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
   chainId: 97,
   accounts: [
-    "a7006c66b45d234ffd75a4d7cb86ca5b71472a524d90735a2ec411ef427eff26",
+    "86cbe5362c5b397af09779e56820eb855086240d572ed38e12186072427a0d88",
+  ],
+};
+
+const mtfMainnet: NetworkUserConfig = {
+  url: "https://mft-chain.metafi.gg/rpc",
+  chainId: 90048,
+  accounts: [
+    "86cbe5362c5b397af09779e56820eb855086240d572ed38e12186072427a0d88",
+  ],
+};
+
+const mtfTestnet: NetworkUserConfig = {
+  url: "http://13.229.154.89:9650/ext/bc/xwW6cSPYXjZqbbmgjdxzADhsLdTL9nH5XSeSAGRXksgVWtNNn/rpc",
+  // url: "https://nodes-prod.18.182.4.86.sslip.io/ext/bc/xwW6cSPYXjZqbbmgjdxzADhsLdTL9nH5XSeSAGRXksgVWtNNn/rpc",
+  chainId: 482611111,
+  accounts: [
+    "0x0069a05b68119ddf6bea76f430fbf2e468e9541d272966ace8628a6ee8874daf",
   ],
 };
 
 const avalTestnet: NetworkUserConfig = {
-  url: "https://ava-testnet.public.blastapi.io/ext/bc/C/rpc",
+  url: "https://avalanche-fuji-c-chain-rpc.publicnode.com",
   chainId: 43113,
   accounts: [
     "86cbe5362c5b397af09779e56820eb855086240d572ed38e12186072427a0d88",
@@ -23,16 +40,14 @@ const bscMainnet: NetworkUserConfig = {
   url: "https://bsc-dataseed.binance.org/",
   chainId: 56,
   accounts: [
-    "4d842aee0df0e349898e51e7e827dca80f8baf57a87092d82b7991193e3474cf",
+    "86cbe5362c5b397af09779e56820eb855086240d572ed38e12186072427a0d88",
   ],
 };
 
 const avalMainnet: NetworkUserConfig = {
   url: "https://avalanche.api.onfinality.io/public/ext/bc/C/rpc",
   chainId: 43114,
-  accounts: [
-    "4d842aee0df0e349898e51e7e827dca80f8baf57a87092d82b7991193e3474cf",
-  ],
+  accounts: [""],
 };
 
 const config: HardhatUserConfig = {
@@ -41,6 +56,7 @@ const config: HardhatUserConfig = {
     apiKey: {
       snowtrace: "GIZ1V79NH9J1E659CXFWHNNSKYGAFK8Q3W", // apiKey is not required, just set a placeholder
       avalanche: "GIZ1V79NH9J1E659CXFWHNNSKYGAFK8Q3W",
+      "metafi-chain": "empty",
     },
     customChains: [
       {
@@ -52,6 +68,14 @@ const config: HardhatUserConfig = {
           browserURL: "https://avalanche.testnet.localhost:8080",
         },
       },
+      {
+        network: "metafi-chain",
+        chainId: 90048,
+        urls: {
+          apiURL: "https://mft-chain.metafi.gg/api",
+          browserURL: "https://mft-chain.metafi.gg",
+        },
+      },
     ],
   },
   networks: {
@@ -60,6 +84,8 @@ const config: HardhatUserConfig = {
     bscMainnet: bscMainnet,
     avalTestnet: avalTestnet,
     avalMainnet: avalMainnet,
+    "metafi-chain": mtfMainnet,
+    mtfTestnet: mtfTestnet,
   },
   solidity: {
     compilers: [
@@ -84,6 +110,9 @@ const config: HardhatUserConfig = {
         },
       },
     ],
+  },
+  sourcify: {
+    enabled: true,
   },
   paths: {
     sources: "./contracts",

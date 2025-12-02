@@ -1,0 +1,34 @@
+{
+  "network": "metafi-chain",
+  "chainId": "90048",
+  "deployer": "0xC97da29804F8565D59B58221fA36C82e765F7638",
+  "timestamp": "2025-11-19T11:43:03.312Z",
+  "gasUsed": {
+    "forwarder": "0",
+    "token": "~2.5M",
+    "total": "~3M"
+  },
+  "contracts": {
+    "vnd": {
+      "name": "VND",
+      "address": "0x6c56B37D0E36b3090CBBefcfaaA0c57a6a05BbF1",
+      "constructorArgs": [
+        "VND Token",
+        "VND",
+        "0x1589Fb115438C7C95D00306C68F9986674b477BD",
+        "0xC97da29804F8565D59B58221fA36C82e765F7638"
+      ]
+    },
+    "forwarder": {
+      "name": "MetafiForwarder",
+      "address": "0x1589Fb115438C7C95D00306C68F9986674b477BD",
+      "constructorArgs": []
+    }
+  },
+  "config": {
+    "tokenName": "VND Token",
+    "tokenSymbol": "VND",
+    "initialOwner": "0xC97da29804F8565D59B58221fA36C82e765F7638",
+    "trustedForwarder": "0x1589Fb115438C7C95D00306C68F9986674b477BD"
+  }
+}
