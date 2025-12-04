@@ -19,14 +19,6 @@ const mtfMainnet: NetworkUserConfig = {
   ],
 };
 
-const mtfTestnet: NetworkUserConfig = {
-  url: "http://13.229.154.89:9650/ext/bc/xwW6cSPYXjZqbbmgjdxzADhsLdTL9nH5XSeSAGRXksgVWtNNn/rpc",
-  // url: "https://nodes-prod.18.182.4.86.sslip.io/ext/bc/xwW6cSPYXjZqbbmgjdxzADhsLdTL9nH5XSeSAGRXksgVWtNNn/rpc",
-  chainId: 482611111,
-  accounts: [
-    "0x0069a05b68119ddf6bea76f430fbf2e468e9541d272966ace8628a6ee8874daf",
-  ],
-};
 
 const avalTestnet: NetworkUserConfig = {
   url: "https://avalanche-fuji-c-chain-rpc.publicnode.com",
@@ -85,7 +77,6 @@ const config: HardhatUserConfig = {
     avalTestnet: avalTestnet,
     avalMainnet: avalMainnet,
     "metafi-chain": mtfMainnet,
-    mtfTestnet: mtfTestnet,
   },
   solidity: {
     compilers: [
